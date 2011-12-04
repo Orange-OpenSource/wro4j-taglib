@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+    web-jsptaglibrary_2_0.xsd" version="2.0">
+    
+    <tlib-version>0.1</tlib-version>
+    <uri>saasstore-wro</uri>
+    <short-name>wro</short-name>
+    <display-name>wro taglib</display-name>
+    <tag>
+        <name>script</name>
+        <tag-class>com.francetelecom.saasstore.wro4j.taglib.ScriptHtmlIncludeTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>exploded</name>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+            <description>Should the files be downloaded without being merged ? (false default)</description>
+        </attribute>
+        <attribute>
+            <name>groupNames</name>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>groupNames included by this tag. @see wro.xml. Comma or semicolon(,;) separated.</description>
+            <required>true</required>
+        </attribute>
+    </tag>
+    <tag>
+        <name>style</name>
+        <tag-class>com.francetelecom.saasstore.wro4j.taglib.StyleHtmlIncludeTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>exploded</name>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+            <description>Should the files be downloaded without being merged ? (false default)</description>
+        </attribute>
+        <attribute>
+            <name>groupNames</name>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>groupNames included by this tag. @see wro.xml. Comma or semicolon(,;) separated.</description>
+            <required>true</required>
+        </attribute>
+    </tag>
+    <tag>
+        <name>asJsArray</name>
+        <tag-class>com.francetelecom.saasstore.wro4j.taglib.AsJsArrayIncludeTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>exploded</name>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+            <description>Should the files be downloaded without being merged ? (false default)</description>
+        </attribute>
+        <attribute>
+            <name>groupNames</name>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>groupNames included by this tag. @see wro.xml. Comma or semicolon(,;) separated.</description>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <name>groupType</name>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>groupType to be included, js or css.</description>
+            <required>true</required>
+        </attribute>    </tag>
+
+
+</taglib>
