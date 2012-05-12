@@ -17,7 +17,6 @@
 package com.francetelecom.saasstore.wro4j.taglib;
 
 import java.io.IOException;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
