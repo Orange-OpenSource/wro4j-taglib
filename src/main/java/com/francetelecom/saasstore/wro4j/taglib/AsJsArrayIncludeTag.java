@@ -19,10 +19,11 @@ package com.francetelecom.saasstore.wro4j.taglib;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 public class AsJsArrayIncludeTag extends IncludeTag {
 	private final static String linkFormat = "'%s',";
 	private String groupType;
-	private final Pattern quotePattern = Pattern.compile("[\\'\"]");
 
 	public void setGroupType(String groupType) {
 		this.groupType = groupType;
@@ -48,6 +49,6 @@ public class AsJsArrayIncludeTag extends IncludeTag {
 
 	@Override
 	protected String quote(String str) {
-		return quotePattern.matcher(str).replaceAll("\\$0");
+		return StringEscapeUtils.escapeEcmaScript(str);
 	}
 }

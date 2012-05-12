@@ -16,9 +16,11 @@
 
 package com.francetelecom.saasstore.wro4j.taglib;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 public abstract class HtmlIncludeTag extends IncludeTag {
 	@Override
 	protected String quote(String str) {
-		return str; //TODO faire du htmlspecialchars
+		return StringEscapeUtils.escapeXml(str);
 	}
 }
