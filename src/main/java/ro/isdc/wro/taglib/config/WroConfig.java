@@ -86,46 +86,6 @@ public class WroConfig {
 		return result;
 	}
 
-	/*
-	private Collection<String> getAllPathsForGlob(String globFile) {
-		Collection<String> result = new HashSet<String>();
-		Collection<String> resources = getAllResourcePaths();
-		AntPathStringMatcher matcher = new AntPathStringMatcher(globFile);
-		for (String resource : resources) {
-			if (matcher.match(resource)) {
-				result.add(resource);
-			}
-		}
-
-		return result;
-	}
-
-	private Collection<String> getAllResourcePaths() {
-		Collection<String> result = new HashSet<String>();
-		LinkedList<String> queue = new LinkedList<String>();
-		queue.add("/"); // initial
-		String current;
-
-		while ((current = queue.poll()) != null) {
-			Set<String> resourcePaths = servletContext
-					.getResourcePaths(current);
-			if (resourcePaths == null) {
-				continue; // should not happen
-			}
-
-			for (String path : resourcePaths) {
-				if (path.endsWith("/")) { // directory
-					queue.add(path);
-				} else {
-					result.add(path);
-				}
-			}
-		}
-
-		return result;
-	}
-	*/
-
 	private void loadMinimizedFiles() {
 		
 		@SuppressWarnings("unchecked")
