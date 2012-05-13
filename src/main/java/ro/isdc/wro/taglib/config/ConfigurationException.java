@@ -13,7 +13,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package com.francetelecom.saasstore.wro4j.taglib;
+package ro.isdc.wro.taglib.config;
 
 public class ConfigurationException extends RuntimeException {
 	private static final long serialVersionUID = 1L;

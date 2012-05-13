@@ -14,18 +14,18 @@
 * limitations under the License.
 */
 
-package com.francetelecom.saasstore.wro4j.taglib;
+package ro.isdc.wro.taglib.config;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Group {
+public class FilesGroup {
 	private String name;
 	private Map<String,List<String>> group = new HashMap<String, List<String>>();
 	private Map<String,String> minimizedFiles = new HashMap<String, String>();
 	
-	public Group(String name) {
+	public FilesGroup(String name) {
 		this.name = name;
 	}
 	

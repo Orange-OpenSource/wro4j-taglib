@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package com.francetelecom.saasstore.wro4j.taglib;
+package ro.isdc.wro.taglib.tag;
 
 import java.io.IOException;
 

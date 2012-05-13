@@ -14,10 +14,11 @@
 * limitations under the License.
 */
 
-package com.francetelecom.saasstore.wro4j.taglib;
+package ro.isdc.wro.taglib.config;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+
 
 /**
  * Application Lifecycle Listener implementation class WroContextListener

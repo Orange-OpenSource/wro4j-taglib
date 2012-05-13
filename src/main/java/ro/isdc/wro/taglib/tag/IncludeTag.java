@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package com.francetelecom.saasstore.wro4j.taglib;
+package ro.isdc.wro.taglib.tag;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,6 +24,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
+
+import ro.isdc.wro.taglib.config.ConfigurationException;
+import ro.isdc.wro.taglib.config.FilesGroup;
+import ro.isdc.wro.taglib.config.WroConfig;
 
 public abstract class IncludeTag extends SimpleTagSupport {
 
@@ -36,7 +40,7 @@ public abstract class IncludeTag extends SimpleTagSupport {
 		try {
 			for (String groupName : groupNames) {
 
-				Group group = config.getGroup(groupName);
+				FilesGroup group = config.getGroup(groupName);
 				if (group == null) {
 					throw new ConfigurationException("group '" + groupName
 							+ "' was not found.");
@@ -74,7 +78,7 @@ public abstract class IncludeTag extends SimpleTagSupport {
 		}
 	}
 
-	private void includeExploded(StringBuilder builder, Group group)
+	private void includeExploded(StringBuilder builder, FilesGroup group)
 			throws ConfigurationException, IOException {
 		List<String> files = group.get(getGroupType());
 		if (files == null) {
@@ -89,7 +93,7 @@ public abstract class IncludeTag extends SimpleTagSupport {
 		}
 	}
 
-	private void include(StringBuilder builder, Group group)
+	private void include(StringBuilder builder, FilesGroup group)
 			throws IOException, ConfigurationException {
 		String fileName = group.getMinimizedFile(getGroupType());
 		if (fileName == null) {

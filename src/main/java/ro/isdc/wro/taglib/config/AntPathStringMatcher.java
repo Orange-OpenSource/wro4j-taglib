@@ -32,7 +32,7 @@
  * limitations under the License.
  */
 
-package com.francetelecom.saasstore.wro4j.taglib;
+package ro.isdc.wro.taglib.config;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

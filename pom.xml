@@ -4,7 +4,7 @@
 	<groupId>ro.isdc.wro4j</groupId>
 	<artifactId>wro4j-taglib</artifactId>
 	<packaging>jar</packaging>
-	<version>0.3-SNAPSHOT</version>
+	<version>1.4.7-SNAPSHOT</version>
 	<name>taglib for wro4j</name>
 	<description>this is a taglib for wro4j</description>
 	<properties>
