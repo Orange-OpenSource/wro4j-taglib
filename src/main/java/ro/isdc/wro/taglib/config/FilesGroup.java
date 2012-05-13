@@ -20,28 +20,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ro.isdc.wro.model.resource.ResourceType;
+
 public class FilesGroup {
 	private String name;
-	private Map<String,List<String>> group = new HashMap<String, List<String>>();
-	private Map<String,String> minimizedFiles = new HashMap<String, String>();
+	private Map<ResourceType,List<String>> group = new HashMap<ResourceType, List<String>>();
+	private Map<ResourceType,String> minimizedFiles = new HashMap<ResourceType, String>();
 	
 	public FilesGroup(String name) {
 		this.name = name;
 	}
 	
-	public void put(String type, List<String> files) {
+	public void put(ResourceType type, List<String> files) {
 		group.put(type, files);
 	}
 	
-	public List<String> get(String type) {
+	public List<String> get(ResourceType type) {
 		return group.get(type);
 	}
 	
-	public void putMinimizedFile(String type, String minimizedFile) {
+	public void putMinimizedFile(ResourceType type, String minimizedFile) {
 		minimizedFiles.put(type, minimizedFile);
 	}
 	
-	public String getMinimizedFile(String type) {
+	public String getMinimizedFile(ResourceType type) {
 		return minimizedFiles.get(type);
 	}
 	

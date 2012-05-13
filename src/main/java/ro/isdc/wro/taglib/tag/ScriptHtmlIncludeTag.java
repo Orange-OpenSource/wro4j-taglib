@@ -16,11 +16,13 @@
 
 package ro.isdc.wro.taglib.tag;
 
+import ro.isdc.wro.model.resource.ResourceType;
+
 public class ScriptHtmlIncludeTag extends HtmlIncludeTag {
-	private static final String groupType = "js";
+	private static final ResourceType groupType = ResourceType.JS;
 	private static final String linkFormat = "<script src='%s'></script>";
 	
-	protected String getGroupType() {
+	protected ResourceType getGroupType() {
 		return groupType;
 	}
 	protected String getLinkFormat() {

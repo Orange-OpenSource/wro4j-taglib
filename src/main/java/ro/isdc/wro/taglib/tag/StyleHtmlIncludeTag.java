@@ -16,11 +16,13 @@
 
 package ro.isdc.wro.taglib.tag;
 
+import ro.isdc.wro.model.resource.ResourceType;
+
 public class StyleHtmlIncludeTag extends HtmlIncludeTag {
-	private static final String groupType = "css";
+	private static final ResourceType groupType = ResourceType.CSS;
 	private static final String linkFormat = "<link rel='stylesheet' href='%s' />";
 	
-	protected String getGroupType() {
+	protected ResourceType getGroupType() {
 		return groupType;
 	}
 	protected String getLinkFormat() {

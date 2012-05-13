@@ -25,6 +25,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
+import ro.isdc.wro.model.resource.ResourceType;
 import ro.isdc.wro.taglib.config.ConfigurationException;
 import ro.isdc.wro.taglib.config.FilesGroup;
 import ro.isdc.wro.taglib.config.WroConfig;
@@ -67,10 +68,24 @@ public abstract class IncludeTag extends SimpleTagSupport {
 
 	}
 
+	/**
+	 * When this parameter is set to true, then the tag
+	 * expands to the individual files composing the groups.
+	 * 
+	 * When it is false (default), the tag expands
+	 * to the combined/minimized files for each groups.
+	 * 
+	 * @param exploded a boolean indicating whether we
+	 * want the individual the combined files. 
+	 */
 	public void setExploded(boolean exploded) {
 		this.exploded = exploded;
 	}
 
+	/**
+	 * Defines the groups to 
+	 * @param strGroupNames
+	 */
 	public void setGroupNames(String strGroupNames) {
 		String[] arrGroupNames = strGroupNames.split(",");
 		for (String groupName : arrGroupNames) {
@@ -115,7 +130,7 @@ public abstract class IncludeTag extends SimpleTagSupport {
 
 	protected abstract String getLinkFormat();
 
-	protected abstract String getGroupType();
+	protected abstract ResourceType getGroupType();
 
 	protected abstract String quote(String str);
 

@@ -69,8 +69,8 @@ public class WroConfig {
 			List<String> jsFiles = getFilesFor(group, ResourceType.JS);
 			List<String> cssFiles = getFilesFor(group, ResourceType.CSS);
 			FilesGroup filesGroup = new FilesGroup(groupName);
-			filesGroup.put("js", jsFiles);
-			filesGroup.put("css", cssFiles);
+			filesGroup.put(ResourceType.JS, jsFiles);
+			filesGroup.put(ResourceType.CSS, cssFiles);
 			groups.put(groupName, filesGroup);
 		}
 	}
@@ -101,7 +101,7 @@ public class WroConfig {
 			if (groups.containsKey(groupName)) {
 				String type = FilenameUtils.getExtension(path);
 				FilesGroup group = groups.get(groupName);
-				group.putMinimizedFile(type, path);
+				group.putMinimizedFile(ResourceType.get(type), path);
 			}
 		}
 	}

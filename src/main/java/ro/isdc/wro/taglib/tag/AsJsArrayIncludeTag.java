@@ -20,15 +20,17 @@ import java.io.IOException;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import ro.isdc.wro.model.resource.ResourceType;
+
 public class AsJsArrayIncludeTag extends IncludeTag {
 	private final static String linkFormat = "'%s',";
-	private String groupType;
+	private ResourceType groupType;
 
 	public void setGroupType(String groupType) {
-		this.groupType = groupType;
+		this.groupType = ResourceType.get(groupType);
 	}
 
-	protected String getGroupType() {
+	protected ResourceType getGroupType() {
 		return groupType;
 	}
 
