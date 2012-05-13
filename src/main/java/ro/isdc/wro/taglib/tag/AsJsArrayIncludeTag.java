@@ -16,8 +16,6 @@
 
 package ro.isdc.wro.taglib.tag;
 
-import java.io.IOException;
-
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import ro.isdc.wro.model.resource.ResourceType;
