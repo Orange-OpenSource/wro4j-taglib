@@ -17,31 +17,31 @@ limitations under the License.
 
 <taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
-    web-jsptaglibrary_2_0.xsd"
+    http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
 	version="2.0">
 
-	<tlib-version>0.1</tlib-version>
-	<uri>http://isdc.ro/wro/taglib</uri>
-	<short-name>wro</short-name>
 	<display-name>wro taglib</display-name>
+	<tlib-version>0.1</tlib-version>
+	<short-name>wro</short-name>
+	<uri>http://isdc.ro/wro/taglib</uri>
 	<tag>
 		<name>script</name>
 		<tag-class>ro.isdc.wro.taglib.tag.ScriptHtmlIncludeTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
+			<description>Should the files be downloaded without being merged ?
+				(false default)</description>
 			<name>exploded</name>
 			<rtexprvalue>true</rtexprvalue>
 			<type>boolean</type>
-			<description>Should the files be downloaded without being merged ?
-				(false default)</description>
 		</attribute>
 		<attribute>
-			<name>groupNames</name>
-			<rtexprvalue>true</rtexprvalue>
-			<type>java.lang.String</type>
 			<description>groupNames included by this tag. @see wro.xml. Comma or
 				semicolon(,;) separated.</description>
+			<name>groupNames</name>
 			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
 		</attribute>
 	</tag>
 	<tag>
@@ -49,19 +49,19 @@ limitations under the License.
 		<tag-class>ro.isdc.wro.taglib.tag.StyleHtmlIncludeTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
+			<description>Should the files be downloaded without being merged ?
+				(false default)</description>
 			<name>exploded</name>
 			<rtexprvalue>true</rtexprvalue>
 			<type>boolean</type>
-			<description>Should the files be downloaded without being merged ?
-				(false default)</description>
 		</attribute>
 		<attribute>
-			<name>groupNames</name>
-			<rtexprvalue>true</rtexprvalue>
-			<type>java.lang.String</type>
 			<description>groupNames included by this tag. @see wro.xml. Comma or
 				semicolon(,;) separated.</description>
+			<name>groupNames</name>
 			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
 		</attribute>
 	</tag>
 	<tag>
@@ -69,26 +69,26 @@ limitations under the License.
 		<tag-class>ro.isdc.wro.taglib.tag.AsJsArrayIncludeTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
+			<description>Should the files be downloaded without being merged ?
+				(false default)</description>
 			<name>exploded</name>
 			<rtexprvalue>true</rtexprvalue>
 			<type>boolean</type>
-			<description>Should the files be downloaded without being merged ?
-				(false default)</description>
 		</attribute>
 		<attribute>
-			<name>groupNames</name>
-			<rtexprvalue>true</rtexprvalue>
-			<type>java.lang.String</type>
 			<description>groupNames included by this tag. @see wro.xml. Comma or
 				semicolon(,;) separated.</description>
+			<name>groupNames</name>
 			<required>true</required>
-		</attribute>
-		<attribute>
-			<name>groupType</name>
 			<rtexprvalue>true</rtexprvalue>
 			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
 			<description>groupType to be included, js or css.</description>
+			<name>groupType</name>
 			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
 		</attribute>
 	</tag>
 
