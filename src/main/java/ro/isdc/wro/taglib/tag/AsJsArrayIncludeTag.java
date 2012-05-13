@@ -23,7 +23,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import ro.isdc.wro.model.resource.ResourceType;
 
 public class AsJsArrayIncludeTag extends IncludeTag {
-	private final static String linkFormat = "'%s',";
+	private final static String markupFormat = "'%s',";
 	private ResourceType groupType;
 
 	public void setGroupType(String groupType) {
@@ -34,18 +34,33 @@ public class AsJsArrayIncludeTag extends IncludeTag {
 		return groupType;
 	}
 
-	protected String getLinkFormat() {
-		return linkFormat;
+	protected String getMarkupFormat() {
+		return markupFormat;
 	}
 
 	@Override
-	protected void writeBegin(StringBuilder builder) throws IOException {
+	protected void writeBegin(StringBuilder builder) {
 		builder.append("[");
 	}
 
 	@Override
-	protected void writeEnd(StringBuilder builder) throws IOException {
-		builder.deleteCharAt(builder.length() - 1).append("]");
+	protected void writeEnd(StringBuilder builder) {
+		int length = builder.length();
+		if (length == 0) {
+			throw new AssertionError("The builder length is zero. This should not happen as we normally append something at the very beginning.");
+		}
+
+		try {
+			if (builder.charAt(length - 1) == ',') {
+				// will be false if we didn't add any file
+				builder.deleteCharAt(length - 1);
+			}
+		} catch (IndexOutOfBoundsException e) {
+			// must not happen as we check before
+			throw new AssertionError("deleteCharAt triggered a StringIndexOutOfBoundsException, which should not happen.");
+		}
+		
+		builder.append("]");
 	}
 
 	@Override

@@ -36,9 +36,13 @@ public abstract class IncludeTag extends SimpleTagSupport {
 	private List<String> groupNames = new ArrayList<String>();
 
 	@Override
-	public void doTag() throws JspException {
+	public final void doTag() throws JspException {
 		WroConfig config = WroConfig.getInstance();
 		try {
+			StringBuilder output = new StringBuilder();
+
+			writeBegin(output);
+			
 			for (String groupName : groupNames) {
 
 				FilesGroup group = config.getGroup(groupName);
@@ -47,9 +51,6 @@ public abstract class IncludeTag extends SimpleTagSupport {
 							+ "' was not found.");
 				}
 
-				StringBuilder output = new StringBuilder();
-
-				writeBegin(output);
 
 				if (exploded) {
 					includeExploded(output, group);
@@ -57,11 +58,10 @@ public abstract class IncludeTag extends SimpleTagSupport {
 					include(output, group);
 				}
 
-				writeEnd(output);
-
-				getJspContext().getOut().append(output);
-
 			}
+			writeEnd(output);
+
+			getJspContext().getOut().append(output);
 		} catch (Exception e) {
 			throw new JspException(e);
 		}
@@ -78,15 +78,16 @@ public abstract class IncludeTag extends SimpleTagSupport {
 	 * @param exploded a boolean indicating whether we
 	 * want the individual the combined files. 
 	 */
-	public void setExploded(boolean exploded) {
+	public final void setExploded(boolean exploded) {
 		this.exploded = exploded;
 	}
 
 	/**
-	 * Defines the groups to 
-	 * @param strGroupNames
+	 * Defines the groups to be included at this place.
+	 * 
+	 * @param strGroupNames Comma-delimited groups.
 	 */
-	public void setGroupNames(String strGroupNames) {
+	public final void setGroupNames(String strGroupNames) {
 		String[] arrGroupNames = strGroupNames.split(",");
 		for (String groupName : arrGroupNames) {
 			groupNames.add(groupName.trim());
@@ -124,21 +125,43 @@ public abstract class IncludeTag extends SimpleTagSupport {
 		PageContext context = (PageContext) getJspContext();
 		String contextPath = ((HttpServletRequest) context.getRequest())
 				.getContextPath();
-		String link = String.format(getLinkFormat(), quote(contextPath + src));
+		String link = String.format(getMarkupFormat(), quote(contextPath + src));
 		builder.append(link);
 	}
 
-	protected abstract String getLinkFormat();
+	/**
+	 * @return the markup format to generate the markup from the file name.
+	 */
+	protected abstract String getMarkupFormat();
 
+	/**
+	 * @return the resource type for this tag
+	 */
 	protected abstract ResourceType getGroupType();
 
+	/**
+	 * This method should quote the filename depending on the markup
+	 * format.
+	 * @param str the string to be quoted
+	 * @return the quoted string
+	 */
 	protected abstract String quote(String str);
 
-	protected void writeBegin(StringBuilder builder) throws IOException {
+	/**
+	 * Override this if you need to write something at the
+	 * beginning of the generated String.
+	 * @param builder
+	 */
+	protected void writeBegin(StringBuilder builder) {
 
 	}
 
-	protected void writeEnd(StringBuilder builder) throws IOException {
+	/**
+	 * Override this if you need to modify the generated String
+	 * after the generation.
+	 * @param builder
+	 */
+	protected void writeEnd(StringBuilder builder) {
 
 	}
 }

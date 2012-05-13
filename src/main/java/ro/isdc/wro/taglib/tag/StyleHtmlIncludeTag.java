@@ -20,13 +20,13 @@ import ro.isdc.wro.model.resource.ResourceType;
 
 public class StyleHtmlIncludeTag extends HtmlIncludeTag {
 	private static final ResourceType groupType = ResourceType.CSS;
-	private static final String linkFormat = "<link rel='stylesheet' href='%s' />";
+	private static final String markupFormat = "<link rel='stylesheet' href='%s' />";
 	
 	protected ResourceType getGroupType() {
 		return groupType;
 	}
-	protected String getLinkFormat() {
-		return linkFormat;
+	protected String getMarkupFormat() {
+		return markupFormat;
 	}
 
 }
