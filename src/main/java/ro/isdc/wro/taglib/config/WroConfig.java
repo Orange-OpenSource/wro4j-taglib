@@ -59,6 +59,9 @@ public class WroConfig {
 	}
 
 	private void loadConfig() throws ConfigurationException {
+		/* we should somehow inject this model so that we could
+		 * test this class more easily.
+		 */
 		ServletContextAttributeHelper helper = new ServletContextAttributeHelper(servletContext);
 		WroModel model = helper.getManagerFactory().create().getModelFactory().create();
 		
