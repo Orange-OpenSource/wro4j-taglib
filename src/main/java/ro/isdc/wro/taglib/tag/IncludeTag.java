@@ -37,35 +37,40 @@ public abstract class IncludeTag extends SimpleTagSupport {
 
 	@Override
 	public final void doTag() throws JspException {
-		WroConfig config = WroConfig.getInstance();
 		try {
 			StringBuilder output = new StringBuilder();
 
-			writeBegin(output);
-			
-			for (String groupName : groupNames) {
-
-				FilesGroup group = config.getGroup(groupName);
-				if (group == null) {
-					throw new ConfigurationException("group '" + groupName
-							+ "' was not found.");
-				}
-
-
-				if (exploded) {
-					includeExploded(output, group);
-				} else {
-					include(output, group);
-				}
-
-			}
-			writeEnd(output);
+			writeTag(output);
 
 			getJspContext().getOut().append(output);
 		} catch (Exception e) {
 			throw new JspException(e);
 		}
 
+	}
+	
+	/* this one is package so that we could test it */
+	/*package*/ final void writeTag(StringBuilder output) {
+		WroConfig config = WroConfig.getInstance();
+
+		writeBegin(output);
+
+		for (String groupName : groupNames) {
+
+			FilesGroup group = config.getGroup(groupName);
+			if (group == null) {
+				throw new ConfigurationException("group '" + groupName
+						+ "' was not found.");
+			}
+
+			if (exploded) {
+				includeExploded(output, group);
+			} else {
+				include(output, group);
+			}
+
+		}
+		writeEnd(output);
 	}
 
 	/**
@@ -95,7 +100,7 @@ public abstract class IncludeTag extends SimpleTagSupport {
 	}
 
 	private void includeExploded(StringBuilder builder, FilesGroup group)
-			throws ConfigurationException, IOException {
+			throws ConfigurationException {
 		List<String> files = group.get(getGroupType());
 		if (files == null) {
 			throw new ConfigurationException(
@@ -110,7 +115,7 @@ public abstract class IncludeTag extends SimpleTagSupport {
 	}
 
 	private void include(StringBuilder builder, FilesGroup group)
-			throws IOException, ConfigurationException {
+			throws ConfigurationException {
 		String fileName = group.getMinimizedFile(getGroupType());
 		if (fileName == null) {
 			throw new ConfigurationException("minimized file for group type '"
@@ -120,8 +125,7 @@ public abstract class IncludeTag extends SimpleTagSupport {
 		writeLink(builder, fileName);
 	}
 
-	private void writeLink(StringBuilder builder, String src)
-			throws IOException {
+	private void writeLink(StringBuilder builder, String src) {
 		PageContext context = (PageContext) getJspContext();
 		String contextPath = ((HttpServletRequest) context.getRequest())
 				.getContextPath();
