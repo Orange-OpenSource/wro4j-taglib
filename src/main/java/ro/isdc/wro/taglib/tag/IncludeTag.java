@@ -16,7 +16,6 @@
 
 package ro.isdc.wro.taglib.tag;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +29,11 @@ import ro.isdc.wro.taglib.config.ConfigurationException;
 import ro.isdc.wro.taglib.config.FilesGroup;
 import ro.isdc.wro.taglib.config.WroConfig;
 
+/**
+ * This is the base class for all IncludeTags, which contains
+ * all business logic. 
+ * @author Julien Wajsberg
+ */
 public abstract class IncludeTag extends SimpleTagSupport {
 
 	private boolean exploded;
@@ -88,7 +92,7 @@ public abstract class IncludeTag extends SimpleTagSupport {
 	}
 
 	/**
-	 * Defines the groups to be included at this place.
+	 * Defines the groups to be included at this location.
 	 * 
 	 * @param strGroupNames Comma-delimited groups.
 	 */
