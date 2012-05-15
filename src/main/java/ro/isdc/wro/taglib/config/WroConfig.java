@@ -35,7 +35,7 @@ import ro.isdc.wro.model.resource.Resource;
 import ro.isdc.wro.model.resource.ResourceType;
 
 public class WroConfig {
-	private static final String WRO_BASE_URL = "/wro/";
+	private static final String WRO_BASE_URL_ATTRIBUTE = "ro.isdc.wro.base.url";
 
 	private static WroConfig instance;
 
@@ -91,9 +91,10 @@ public class WroConfig {
 
 	private void loadMinimizedFiles() {
 		
+		String wroBaseUrl = servletContext.getInitParameter(WRO_BASE_URL_ATTRIBUTE);
 		@SuppressWarnings("unchecked")
 		Set<String> resourcePaths = servletContext
-				.getResourcePaths(WRO_BASE_URL);
+				.getResourcePaths(wroBaseUrl);
 		if (resourcePaths == null) {
 			return;
 		}
