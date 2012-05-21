@@ -22,6 +22,11 @@ import java.util.Map;
 
 import ro.isdc.wro.model.resource.ResourceType;
 
+/**
+ * Keeps the minimized and unminimized files for each resource type.
+ * 
+ * @author Julien Wajsberg
+ */
 public class FilesGroup {
 	private String name;
 	private Map<ResourceType,List<String>> group = new HashMap<ResourceType, List<String>>();
