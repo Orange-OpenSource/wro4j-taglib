@@ -16,7 +16,7 @@
 * Author is Julien Wajsberg <julien.wajsberg@orange.com>
 */
 
-package ro.isdc.wro.taglib.config;
+package com.francetelecom.wro.taglib.config;
 
 import java.util.ArrayList;
 import java.util.HashMap;

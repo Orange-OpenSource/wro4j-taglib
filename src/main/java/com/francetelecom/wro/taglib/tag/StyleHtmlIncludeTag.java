@@ -14,13 +14,19 @@
 * limitations under the License.
 */
 
-package ro.isdc.wro.taglib.tag;
+package com.francetelecom.wro.taglib.tag;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import ro.isdc.wro.model.resource.ResourceType;
 
-public abstract class HtmlIncludeTag extends IncludeTag {
-	@Override
-	protected String quote(String str) {
-		return StringEscapeUtils.escapeXml(str);
+public class StyleHtmlIncludeTag extends HtmlIncludeTag {
+	private static final ResourceType groupType = ResourceType.CSS;
+	private static final String markupFormat = "<link rel='stylesheet' href='%s' />";
+	
+	protected ResourceType getGroupType() {
+		return groupType;
 	}
+	protected String getMarkupFormat() {
+		return markupFormat;
+	}
+
 }

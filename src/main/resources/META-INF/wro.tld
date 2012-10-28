@@ -26,7 +26,7 @@ limitations under the License.
 	<uri>http://isdc.ro/wro/taglib</uri>
 	<tag>
 		<name>script</name>
-		<tag-class>ro.isdc.wro.taglib.tag.ScriptHtmlIncludeTag</tag-class>
+		<tag-class>com.francetelecom.wro.taglib.tag.ScriptHtmlIncludeTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<description>Should the files be downloaded without being merged ?
@@ -46,7 +46,7 @@ limitations under the License.
 	</tag>
 	<tag>
 		<name>style</name>
-		<tag-class>ro.isdc.wro.taglib.tag.StyleHtmlIncludeTag</tag-class>
+		<tag-class>com.francetelecom.wro.taglib.tag.StyleHtmlIncludeTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<description>Should the files be downloaded without being merged ?
@@ -66,7 +66,7 @@ limitations under the License.
 	</tag>
 	<tag>
 		<name>asJsArray</name>
-		<tag-class>ro.isdc.wro.taglib.tag.AsJsArrayIncludeTag</tag-class>
+		<tag-class>com.francetelecom.wro.taglib.tag.AsJsArrayIncludeTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<description>Should the files be downloaded without being merged ?

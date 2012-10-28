@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package ro.isdc.wro.taglib.tag;
+package com.francetelecom.wro.taglib.tag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +24,11 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
+import com.francetelecom.wro.taglib.config.ConfigurationException;
+import com.francetelecom.wro.taglib.config.FilesGroup;
+import com.francetelecom.wro.taglib.config.WroConfig;
+
 import ro.isdc.wro.model.resource.ResourceType;
-import ro.isdc.wro.taglib.config.ConfigurationException;
-import ro.isdc.wro.taglib.config.FilesGroup;
-import ro.isdc.wro.taglib.config.WroConfig;
 
 /**
  * This is the base class for all IncludeTags, which contains

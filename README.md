@@ -153,7 +153,7 @@ must be mapped to `/*`.
 		<listener-class>ro.isdc.wro.http.WroServletContextListener</listener-class>
 	</listener>
 	<listener>
-		<listener-class>ro.isdc.wro.taglib.config.WroContextListener</listener-class>
+		<listener-class>com.francetelecom.wro.taglib.config.WroContextListener</listener-class>
 	</listener>
 	
 	<context-param>

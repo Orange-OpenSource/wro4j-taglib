@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package ro.isdc.wro.taglib.tag;
+package com.francetelecom.wro.taglib.tag;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
