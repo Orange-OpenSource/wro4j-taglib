@@ -38,6 +38,7 @@ import ro.isdc.wro.model.resource.ResourceType;
 public abstract class IncludeTag extends SimpleTagSupport {
 
 	private boolean exploded;
+	private boolean pretty;
 	private List<String> groupNames = new ArrayList<String>();
 
 	@Override
@@ -93,6 +94,20 @@ public abstract class IncludeTag extends SimpleTagSupport {
 	}
 
 	/**
+	 * When this parameter is set to true, then the tag
+	 * is written with a final cr/lf.
+	 * This can makes the output prettier, but this
+	 * really depends on your taste.
+	 * 
+	 * @param exploded a boolean indicating whether we
+	 * want a pretty output. 
+	 */
+	// TODO: makes this a servlet context param ?
+	public final void setPretty(boolean pretty) {
+		this.pretty = pretty;
+	}
+	
+	/**
 	 * Defines the groups to be included at this location.
 	 * 
 	 * @param strGroupNames Comma-delimited groups.
@@ -136,6 +151,10 @@ public abstract class IncludeTag extends SimpleTagSupport {
 				.getContextPath();
 		String link = String.format(getMarkupFormat(), quote(contextPath + src));
 		builder.append(link);
+
+		if (pretty) {
+			builder.append('\n');
+		}
 	}
 
 	/**
