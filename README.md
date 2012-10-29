@@ -33,7 +33,7 @@ this configuration.
 	<name>test release with wro4j used at build-time</name>
 	<url>http://maven.apache.org</url>
 	<properties>
-		<wro4j.version>1.4.6</wro4j.version>
+		<wro4j.version>1.6.0</wro4j.version>
 	</properties>
 
 	<build>
