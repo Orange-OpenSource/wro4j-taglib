@@ -13,20 +13,20 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package com.francetelecom.wro.taglib.config;
 
-public class ConfigurationException extends RuntimeException {
-	private static final long serialVersionUID = 1L;
+package com.orange.wro.taglib.tag;
 
-	public ConfigurationException() {
-		super();
-	}
+import ro.isdc.wro.model.resource.ResourceType;
 
-	public ConfigurationException(String desc) {
-		super(desc);
-	}
+public class StyleHtmlIncludeTag extends HtmlIncludeTag {
+	private static final ResourceType groupType = ResourceType.CSS;
+	private static final String markupFormat = "<link rel='stylesheet' href='%s' />";
 	
-	public ConfigurationException(Throwable t) {
-		super(t);
+	protected ResourceType getGroupType() {
+		return groupType;
 	}
+	protected String getMarkupFormat() {
+		return markupFormat;
+	}
+
 }

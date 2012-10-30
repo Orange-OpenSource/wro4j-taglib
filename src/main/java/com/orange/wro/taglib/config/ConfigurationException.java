@@ -13,14 +13,20 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+package com.orange.wro.taglib.config;
 
-package com.francetelecom.wro.taglib.tag;
+public class ConfigurationException extends RuntimeException {
+	private static final long serialVersionUID = 1L;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+	public ConfigurationException() {
+		super();
+	}
 
-public abstract class HtmlIncludeTag extends IncludeTag {
-	@Override
-	protected String quote(String str) {
-		return StringEscapeUtils.escapeXml(str);
+	public ConfigurationException(String desc) {
+		super(desc);
+	}
+	
+	public ConfigurationException(Throwable t) {
+		super(t);
 	}
 }

@@ -14,13 +14,13 @@
 * limitations under the License.
 */
 
-package com.francetelecom.wro.taglib.tag;
+package com.orange.wro.taglib.tag;
 
 import ro.isdc.wro.model.resource.ResourceType;
 
-public class StyleHtmlIncludeTag extends HtmlIncludeTag {
-	private static final ResourceType groupType = ResourceType.CSS;
-	private static final String markupFormat = "<link rel='stylesheet' href='%s' />";
+public class ScriptHtmlIncludeTag extends HtmlIncludeTag {
+	private static final ResourceType groupType = ResourceType.JS;
+	private static final String markupFormat = "<script src='%s'></script>";
 	
 	protected ResourceType getGroupType() {
 		return groupType;
@@ -28,5 +28,4 @@ public class StyleHtmlIncludeTag extends HtmlIncludeTag {
 	protected String getMarkupFormat() {
 		return markupFormat;
 	}
-
 }

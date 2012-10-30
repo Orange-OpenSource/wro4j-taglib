@@ -14,18 +14,13 @@
 * limitations under the License.
 */
 
-package com.francetelecom.wro.taglib.tag;
+package com.orange.wro.taglib.tag;
 
-import ro.isdc.wro.model.resource.ResourceType;
+import org.apache.commons.lang3.StringEscapeUtils;
 
-public class ScriptHtmlIncludeTag extends HtmlIncludeTag {
-	private static final ResourceType groupType = ResourceType.JS;
-	private static final String markupFormat = "<script src='%s'></script>";
-	
-	protected ResourceType getGroupType() {
-		return groupType;
-	}
-	protected String getMarkupFormat() {
-		return markupFormat;
+public abstract class HtmlIncludeTag extends IncludeTag {
+	@Override
+	protected String quote(String str) {
+		return StringEscapeUtils.escapeXml(str);
 	}
 }

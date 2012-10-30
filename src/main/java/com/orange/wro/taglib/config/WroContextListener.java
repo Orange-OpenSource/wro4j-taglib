@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package com.francetelecom.wro.taglib.config;
+package com.orange.wro.taglib.config;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package com.francetelecom.wro.taglib.tag;
+package com.orange.wro.taglib.tag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +24,9 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
-import com.francetelecom.wro.taglib.config.ConfigurationException;
-import com.francetelecom.wro.taglib.config.FilesGroup;
-import com.francetelecom.wro.taglib.config.WroConfig;
+import com.orange.wro.taglib.config.ConfigurationException;
+import com.orange.wro.taglib.config.FilesGroup;
+import com.orange.wro.taglib.config.WroConfig;
 
 import ro.isdc.wro.model.resource.ResourceType;
 
