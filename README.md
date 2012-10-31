@@ -1,5 +1,5 @@
-A taglib for wro4j
-==================
+A taglib for [wro4j](http://code.google.com/p/wro4j/)
+=====================================================
 
 Why ?
 -----
