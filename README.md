@@ -19,14 +19,14 @@ folder as always.
 
 ### Maven configuration
 The best way to use wro4j at buildtime is the following. As of
-wro4j 1.4.6, CssUrlRewritingProcessor doesn't work correctly with
+wro4j 1.6.0, CssUrlRewritingProcessor doesn't work correctly with
 this configuration.
 
 ```XML
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>ro.isdc.wro4j.examples</groupId>
+	<groupId>com.orange.wro4j.examples</groupId>
 	<artifactId>test-release-wro4j-buildtime</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
@@ -63,7 +63,8 @@ this configuration.
 					<targetGroups>jquery,jquery-ui,appli</targetGroups>
 					<ignoreMissingResources>false</ignoreMissingResources>
 					<wroManagerFactory>ro.isdc.wro.examples.buildtime.CustomWroManagerFactory</wroManagerFactory>
-					<destinationFolder>${project.build.directory}/generated-resources/wro/wro/</destinationFolder>
+					<contextFolder>${basedir}/src/main/webapp/</contextFolder>
+					<destinationFolder>${project.build.directory}/${project.build.finalName}/wro/</destinationFolder>
 					<wroFile>${basedir}/src/main/webapp/WEB-INF/wro.xml</wroFile>
 				</configuration>
 			</plugin>
@@ -110,9 +111,9 @@ this configuration.
 		</dependency>
 
 		<dependency>
-			<groupId>ro.isdc.wro4j</groupId>
+			<groupId>com.orange.wro4j</groupId>
 			<artifactId>wro4j-taglib</artifactId>
-			<version>1.4.7-SNAPSHOT</version>
+			<version>1.0</version>
 		</dependency>
 	</dependencies>
 
