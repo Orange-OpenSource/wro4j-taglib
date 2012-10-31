@@ -234,3 +234,7 @@ In the _normal_ mode, the tag will generate one element per group.
 ```JavaScript
 var files = ['\/contextPath\/wro\/group1-1336929561758.js','\/contextPath\/wro\/group2-1336930178802.js'];
 ```
+
+### Real example
+A real example has been made available at this repository: https://github.com/Orange-OpenSource/test-release-wro4j-buildtime
+
