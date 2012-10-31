@@ -6,7 +6,8 @@
 	<packaging>jar</packaging>
 	<version>1.0.0-SNAPSHOT</version>
 	<name>taglib for wro4j</name>
-	<description>this is a taglib for wro4j</description>
+	<description>This is a taglib for wro4j</description>
+	<url>https://github.com/Orange-OpenSource/wro4j-taglib</url>
 	<properties>
 		<wro4j.version>1.6.0</wro4j.version>
 	</properties>
@@ -65,4 +66,66 @@
 			<version>2.1</version>
 		</dependency>
 	</dependencies>
+
+	<!-- signing releases -->
+	<profiles>
+		<profile>
+			<id>release-sign-artifacts</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.1</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
+	<scm>
+		<connection>scm:git:https://github.com/Orange-OpenSource/wro4j-taglib.git</connection>
+		<url>https://github.com/Orange-OpenSource/wro4j-taglib</url>
+	</scm>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<organization>
+		<name>Orange</name>
+		<url>http://www.orange.com</url>
+	</organization>
+	<developers>
+		<developer>
+			<id>julien</id>
+			<name>Julien Wajsberg</name>
+			<email>julien.wajsberg@orange.com</email>
+			<organization>Orange</organization>
+			<organizationUrl>http://www.orange.com</organizationUrl>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+	</developers>
 </project>
