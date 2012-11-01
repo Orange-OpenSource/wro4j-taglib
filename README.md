@@ -20,7 +20,7 @@ folder as always.
 ### Maven configuration
 The best way to use wro4j at buildtime is the following. As of
 wro4j 1.6.0, CssUrlRewritingProcessor doesn't work correctly with
-this configuration.
+this configuration, see the comment in the file.
 
 ```XML
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -64,6 +64,8 @@ this configuration.
 					<ignoreMissingResources>false</ignoreMissingResources>
 					<wroManagerFactory>ro.isdc.wro.examples.buildtime.CustomWroManagerFactory</wroManagerFactory>
 					<contextFolder>${basedir}/src/main/webapp/</contextFolder>
+                    // use ${basedir}/src/main/webapp/wro if you use the CssUrlRewritingProcessor
+                    // but I dislike generating things there as it isn't removed by mvn clean
 					<destinationFolder>${project.build.directory}/${project.build.finalName}/wro/</destinationFolder>
 					<wroFile>${basedir}/src/main/webapp/WEB-INF/wro.xml</wroFile>
 				</configuration>
@@ -120,6 +122,8 @@ this configuration.
 
 </project>
 ```
+
+Be careful as wro4j is only compatible with maven 3 (as of wro4j 1.5).
 
 ### web.xml configuration
 You need to add two listeners: normal wro4j's `WroServletContextListener`
