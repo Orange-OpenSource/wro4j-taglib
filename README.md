@@ -96,6 +96,8 @@ this configuration, see the comment in the file.
 			<groupId>ro.isdc.wro4j</groupId>
 			<artifactId>wro4j-extensions</artifactId>
 			<version>${wro4j.version}</version>
+			<!-- we don't need them at runtime and it brings to many transitive dependencies -->
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
