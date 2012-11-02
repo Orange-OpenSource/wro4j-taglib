@@ -18,9 +18,11 @@ Configure your `wro.xml` as usually, and place it in your `WEB-INF`
 folder as always.
 
 ### Maven configuration
-The best way to use wro4j at buildtime is the following. As of
-wro4j 1.6.0, CssUrlRewritingProcessor doesn't work correctly with
-this configuration, see the comment in the file.
+The best way to use wro4j at buildtime is the following.
+
+We're not sure that this configuration works correctly with
+the CSS url rewriting processor, see also the comment in
+the file.
 
 ```XML
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -64,8 +66,8 @@ this configuration, see the comment in the file.
 					<ignoreMissingResources>false</ignoreMissingResources>
 					<wroManagerFactory>ro.isdc.wro.examples.buildtime.CustomWroManagerFactory</wroManagerFactory>
 					<contextFolder>${basedir}/src/main/webapp/</contextFolder>
-                    // use ${basedir}/src/main/webapp/wro if you use the CssUrlRewritingProcessor
-                    // but I dislike generating things there as it isn't removed by mvn clean
+					<!-- use ${basedir}/src/main/webapp/wro if you use the CssUrlRewritingProcessor
+					     but I dislike generating things there as it isn't removed by mvn clean -->
 					<destinationFolder>${project.build.directory}/${project.build.finalName}/wro/</destinationFolder>
 					<wroFile>${basedir}/src/main/webapp/WEB-INF/wro.xml</wroFile>
 				</configuration>
@@ -117,7 +119,7 @@ this configuration, see the comment in the file.
 		<dependency>
 			<groupId>com.orange.wro4j</groupId>
 			<artifactId>wro4j-taglib</artifactId>
-			<version>1.0</version>
+			<version>1.1</version>
 		</dependency>
 	</dependencies>
 
@@ -125,7 +127,8 @@ this configuration, see the comment in the file.
 </project>
 ```
 
-Be careful as wro4j is only compatible with maven 3 (as of wro4j 1.5).
+Be careful as wro4j is only compatible with maven 3 (as of wro4j 1.5). If you need to
+use maven 2, use wro4j 1.4.9.
 
 ### web.xml configuration
 You need to add two listeners: normal wro4j's `WroServletContextListener`
