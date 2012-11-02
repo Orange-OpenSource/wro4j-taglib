@@ -41,7 +41,7 @@ import ro.isdc.wro.model.resource.ResourceType;
  * @author Julien Wajsberg
  */
 public class WroConfig {
-	private static final String WRO_BASE_URL_ATTRIBUTE = "ro.isdc.wro.base.url";
+	private static final String WRO_BASE_URL_ATTRIBUTE = "com.orange.wro.base.url";
 
 	private static WroConfig instance;
 

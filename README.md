@@ -64,7 +64,7 @@ the file.
 				<configuration>
 					<targetGroups>jquery,jquery-ui,appli</targetGroups>
 					<ignoreMissingResources>false</ignoreMissingResources>
-					<wroManagerFactory>ro.isdc.wro.examples.buildtime.CustomWroManagerFactory</wroManagerFactory>
+					<wroManagerFactory>com.orange.wro.examples.buildtime.CustomWroManagerFactory</wroManagerFactory>
 					<contextFolder>${basedir}/src/main/webapp/</contextFolder>
 					<!-- use ${basedir}/src/main/webapp/wro if you use the CssUrlRewritingProcessor
 					     but I dislike generating things there as it isn't removed by mvn clean -->
@@ -119,7 +119,7 @@ the file.
 		<dependency>
 			<groupId>com.orange.wro4j</groupId>
 			<artifactId>wro4j-taglib</artifactId>
-			<version>1.1</version>
+			<version>1.2</version>
 		</dependency>
 	</dependencies>
 
@@ -135,13 +135,11 @@ You need to add two listeners: normal wro4j's `WroServletContextListener`
 and this module's `WroServletContextListener`.
 
 Then you need to configure a context parameter whose name is
-`ro.isdc.wro.base.url` and whose value is the URI where the combined
+`com.orange.wro.base.url` and whose value is the URI where the combined
 files are.
 
 And last, you must configure a Filter to configure wro4j's Context.
-The `test-release-wro4j-buildtime` example project provides one
-Filter that should be in a future wro4j release as well. This Filter
-must be mapped to `/*`.
+This Filter must be mapped to `/*`.
 
 ```XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -167,13 +165,13 @@ must be mapped to `/*`.
 	</listener>
 	
 	<context-param>
-		<param-name>ro.isdc.wro.base.url</param-name>
+		<param-name>com.orange.wro.base.url</param-name>
 		<param-value>/wro</param-value>
 	</context-param>
 
 	<filter>
 		<filter-name>wroContextFilter</filter-name>
-		<filter-class>ro.isdc.wro.examples.buildtime.WroContextFilter</filter-class>
+		<filter-class>ro.isdc.wro.http.WroContextFilter.class</filter-class>
 	</filter>
 
 	<filter-mapping>
@@ -187,7 +185,7 @@ And how do I use it ?
 ---------------------
 1. You need to declare the taglib at the beginning
 ```JSP
-<%@ taglib uri="http://isdc.ro/wro/taglib" prefix="wro" %>
+<%@ taglib uri="http://com.orange/wro/taglib" prefix="wro" %>
 ```
 
 2. There are 3 available tags
