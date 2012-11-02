@@ -171,7 +171,7 @@ This Filter must be mapped to `/*`.
 
 	<filter>
 		<filter-name>wroContextFilter</filter-name>
-		<filter-class>ro.isdc.wro.http.WroContextFilter.class</filter-class>
+		<filter-class>ro.isdc.wro.http.WroContextFilter</filter-class>
 	</filter>
 
 	<filter-mapping>
