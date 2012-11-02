@@ -15,7 +15,7 @@
 		<version>7</version>
 	</parent>
 	<properties>
-		<wro4j.version>1.6.0</wro4j.version>
+		<wro4j.version>1.4.9</wro4j.version>
 	</properties>
 	<build>
 		<plugins>
