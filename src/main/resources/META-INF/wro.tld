@@ -15,7 +15,7 @@
 	<display-name>wro taglib</display-name>
 	<tlib-version>0.1</tlib-version>
 	<short-name>wro</short-name>
-	<uri>http://isdc.ro/wro/taglib</uri>
+	<uri>http://orange.com/wro/taglib</uri>
 	<tag>
 		<name>script</name>
 		<tag-class>com.orange.wro.taglib.tag.ScriptHtmlIncludeTag</tag-class>
