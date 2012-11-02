@@ -20,8 +20,12 @@ folder as always.
 ### Maven configuration
 The best way to use wro4j at buildtime is the following.
 
-We're not sure that this configuration works correctly with
-the CSS url rewriting processor, see also the comment in
+This configuration doesn't generate correct URLs in CSS if you use the
+CSS URL rewriting processor (which you should) and you're deploying wro-
+generated files using Eclipse WTP. However you shouldn't need this because
+this taglib lets you use the original version of the files anyway.
+
+See also the comment in
 the file.
 
 ```XML
@@ -67,6 +71,7 @@ the file.
 					<wroManagerFactory>com.orange.wro.examples.buildtime.CustomWroManagerFactory</wroManagerFactory>
 					<contextFolder>${basedir}/src/main/webapp/</contextFolder>
 					<!-- use ${basedir}/src/main/webapp/wro if you use the CssUrlRewritingProcessor
+					     and wants to deploy wro-generated CSS files in WTP
 					     but I dislike generating things there as it isn't removed by mvn clean -->
 					<destinationFolder>${project.build.directory}/${project.build.finalName}/wro/</destinationFolder>
 					<wroFile>${basedir}/src/main/webapp/WEB-INF/wro.xml</wroFile>
