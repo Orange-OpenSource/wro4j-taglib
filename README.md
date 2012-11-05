@@ -190,7 +190,7 @@ And how do I use it ?
 ---------------------
 1. You need to declare the taglib at the beginning
 ```JSP
-<%@ taglib uri="http://com.orange/wro/taglib" prefix="wro" %>
+<%@ taglib uri="http://orange.com/wro/taglib" prefix="wro" %>
 ```
 
 2. There are 3 available tags
