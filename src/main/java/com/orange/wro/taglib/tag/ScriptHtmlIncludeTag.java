@@ -20,12 +20,11 @@ import ro.isdc.wro.model.resource.ResourceType;
 
 public class ScriptHtmlIncludeTag extends HtmlIncludeTag {
 	private static final ResourceType groupType = ResourceType.JS;
-	private static final String markupFormat = "<script src='%s'></script>";
 	
 	protected ResourceType getGroupType() {
 		return groupType;
 	}
-	protected String getMarkupFormat() {
-		return markupFormat;
+	protected String getMarkupFormat(String src) {
+		return WroTagLibConstants.JS_MARKUP;
 	}
 }
