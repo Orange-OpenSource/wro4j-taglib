@@ -104,6 +104,9 @@
 			<type>java.lang.String</type>
 		</attribute>
 	</tag>
-
-
+	<tag>
+		<name>optionalScript</name>
+		<tag-class>com.orange.wro.taglib.tag.OptionalScriptTag</tag-class>
+		<body-content>empty</body-content>
+	</tag>
 </taglib>

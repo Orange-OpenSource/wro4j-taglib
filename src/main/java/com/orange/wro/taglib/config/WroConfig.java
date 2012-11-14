@@ -42,12 +42,14 @@ import ro.isdc.wro.model.resource.ResourceType;
  */
 public class WroConfig {
 	private static final String WRO_BASE_URL_ATTRIBUTE = "com.orange.wro.base.url";
+	private static final String LESS_SCRIPT_ATTRIBUTE = "com.orange.wro.less.path";
 
 	private static WroConfig instance;
 
 	private Map<String, FilesGroup> groups;
 	private ServletContext servletContext;
 	private boolean initialized = false;
+	private String lessPath;
 
 	public static WroConfig getInstance() throws ConfigurationException {
 		if (instance == null) {
@@ -126,6 +128,13 @@ public class WroConfig {
 			instance = new WroConfig();
 			instance.servletContext = context;
 		}
+	}
+
+	public String getLessPath() {
+		if (lessPath == null) {
+			lessPath = servletContext.getInitParameter(LESS_SCRIPT_ATTRIBUTE);
+		}
+		return lessPath;
 	}
 
 	public FilesGroup getGroup(String groupName) {
