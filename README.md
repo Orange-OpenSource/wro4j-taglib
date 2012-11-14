@@ -174,6 +174,12 @@ This Filter must be mapped to `/*`.
 		<param-value>/wro</param-value>
 	</context-param>
 
+	<!-- optional: only needed if you intend to use LESS with exploded files -->
+	<context-param>
+		<param-name>com.orange.wro.less.path</param-name>
+		<param-value>/js/less-xxx.js</param-value>
+	</context-param>
+
 	<filter>
 		<filter-name>wroContextFilter</filter-name>
 		<filter-class>ro.isdc.wro.http.WroContextFilter</filter-class>
@@ -193,10 +199,12 @@ And how do I use it ?
 <%@ taglib uri="http://orange.com/wro/taglib" prefix="wro" %>
 ```
 
-2. There are 3 available tags
+2. There are 4 available tags
     * `script` generates script tags
     * `style` generates stylesheet link tags
     * `asJsArray` generates a JavaScript array
+    * `optionalScript` is optional, it should only be used when LESS is used with exploded files. It should be included
+      AFTER the stylesheets and inside the header.
 
 ### `script` syntax
 ```JSP
@@ -231,10 +239,8 @@ In the _normal_ mode, the tag will generate one link tag per group.
 <link rel='stylesheet' href='/contextPath/wro/group2-1336929562445.css' />
 ```
 
+
 ### `asJsArray` syntax
-```JSP
-var files = <wro:asJsArray groupNames='group1,group2' groupType="js/css" exploded="true/false" />;
-```
 
 * `groupNames` is a comma-delimited list of group names
 * `groupType` specifies if the tag should get `js` or `css` files.
@@ -246,6 +252,18 @@ In the _normal_ mode, the tag will generate one element per group.
 ```JavaScript
 var files = ['\/contextPath\/wro\/group1-1336929561758.js','\/contextPath\/wro\/group2-1336930178802.js'];
 ```
+
+
+### `optionalScript` syntax
+```JSP
+<wro:optionalScript />
+```
+
+#### Output example
+```JavaScript
+<script src='/contextPath/js/less-xxx.js'></script>
+```
+
 
 ### Real example
 A real example has been made available at this repository: https://github.com/Orange-OpenSource/test-release-wro4j-buildtime
