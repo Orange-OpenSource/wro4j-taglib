@@ -18,21 +18,17 @@
 
 package com.orange.wro.taglib.config;
 
+import org.apache.commons.io.FilenameUtils;
+import ro.isdc.wro.model.WroModel;
+import ro.isdc.wro.model.group.Group;
+import ro.isdc.wro.model.resource.Resource;
+import ro.isdc.wro.model.resource.ResourceType;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.servlet.ServletContext;
-
-import org.apache.commons.io.FilenameUtils;
-
-import ro.isdc.wro.http.support.ServletContextAttributeHelper;
-import ro.isdc.wro.model.WroModel;
-import ro.isdc.wro.model.group.Group;
-import ro.isdc.wro.model.resource.Resource;
-import ro.isdc.wro.model.resource.ResourceType;
 
 /**
  * This singleton keeps the minimized and unminimized files for
@@ -41,12 +37,10 @@ import ro.isdc.wro.model.resource.ResourceType;
  * @author Julien Wajsberg
  */
 public class WroConfig {
-	private static final String WRO_BASE_URL_ATTRIBUTE = "com.orange.wro.base.url";
-
 	/* package */ static WroConfig instance;
 
 	private Map<String, FilesGroup> groups;
-	private ServletContext servletContext;
+	private Context context;
 	private boolean initialized = false;
 
 	public static WroConfig getInstance() throws ConfigurationException {
@@ -65,14 +59,11 @@ public class WroConfig {
 	}
 
 	private void loadConfig() throws ConfigurationException {
-		/* we should somehow inject this model so that we could
-		 * test this class more easily.
-		 */
-		WroModel model = this.getModel();
+		WroModel model = this.context.getModel();
 		
 		groups = new HashMap<String, FilesGroup>();
 		
-		for(Group group: model.getGroups()) {
+		for (Group group: model.getGroups()) {
 			String groupName = group.getName();
 			List<String> jsFiles = getFilesFor(group, ResourceType.JS);
 			List<String> cssFiles = getFilesFor(group, ResourceType.CSS);
@@ -82,23 +73,6 @@ public class WroConfig {
 			groups.put(groupName, filesGroup);
 		}
 	}
-
-    private WroModel getModel() {
-        WroModel wroModel = null;
-
-        try {
-            wroModel = this.getServletContextAttributeHelper(this.servletContext).
-                                    getManagerFactory().create().getModelFactory().create();
-        } catch (Exception ex) {
-            throw new ConfigurationException("Unable to retrieve wro4j model");
-        }
-
-        return wroModel;
-    }
-
-    private ServletContextAttributeHelper getServletContextAttributeHelper(ServletContext servletContext) {
-        return new ServletContextAttributeHelper(servletContext);
-    }
 
 	private List<String> getFilesFor(Group group, ResourceType resourceType) {
 		List<String> result = new ArrayList<String>();
@@ -117,11 +91,8 @@ public class WroConfig {
 	 * However, it's difficult to make it work with WTP and m2e-wro4j eclipse plugin.
 	 */
 	private void loadMinimizedFiles() {
-		
-		String wroBaseUrl = servletContext.getInitParameter(WRO_BASE_URL_ATTRIBUTE);
-		@SuppressWarnings("unchecked")
-		Set<String> resourcePaths = servletContext
-				.getResourcePaths(wroBaseUrl);
+		Set<String> resourcePaths = this.context.getResourcePaths();
+
 		if (resourcePaths == null) {
 			return;
 		}
@@ -137,10 +108,10 @@ public class WroConfig {
 		}
 	}
 
-	/* package */static synchronized void createInstance(ServletContext context) {
+	/* package */static synchronized void createInstance(Context context) {
 		if (instance == null) {
 			instance = new WroConfig();
-			instance.servletContext = context;
+			instance.context = context;
 		}
 	}
 

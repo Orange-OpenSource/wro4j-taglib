@@ -36,15 +36,15 @@ public class WroContextListener implements ServletContextListener {
 	 * @see ServletContextListener#contextInitialized(ServletContextEvent)
 	 */
 	@Override
-	public void contextInitialized(ServletContextEvent sce) {
-		WroConfig.createInstance(sce.getServletContext());
+	public void contextInitialized(ServletContextEvent servletContextEvent) {
+        Context context = new Context(servletContextEvent.getServletContext());
+		WroConfig.createInstance(context);
 	}
 
 	/**
 	 * @see ServletContextListener#contextDestroyed(ServletContextEvent)
 	 */
 	@Override
-	public void contextDestroyed(ServletContextEvent sce) {
+	public void contextDestroyed(ServletContextEvent servletContextEvent) {
 	}
-
 }

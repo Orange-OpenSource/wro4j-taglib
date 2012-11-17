@@ -12,12 +12,17 @@ import ro.isdc.wro.manager.WroManager;
 import ro.isdc.wro.manager.factory.WroManagerFactory;
 import ro.isdc.wro.model.WroModel;
 import ro.isdc.wro.model.factory.WroModelFactory;
+import ro.isdc.wro.model.group.Group;
+import ro.isdc.wro.model.resource.Resource;
+import ro.isdc.wro.model.resource.ResourceType;
 
 import javax.servlet.ServletContext;
+import java.util.Arrays;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
@@ -29,8 +34,18 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({WroConfig.class, WroManager.class})
 public class WroConfigTest {
+    public static final String TEST_GROUP = "testGroup";
+    ServletContext servletContext;
+    Context context;
+
+    @Before
+    public void setUp() {
+        this.servletContext = mock(ServletContext.class);
+        this.context = mock(Context.class);
+    }
+
     @After
-    public void cleanUp() {
+    public void tearDown() {
         WroConfig.instance = null;
     }
 
@@ -39,30 +54,41 @@ public class WroConfigTest {
         WroConfig.getInstance();
     }
 
-    @Test(expected = ConfigurationException.class)
-    public void getInstanceFailsWhenNoModelAvailable() {
-        ServletContext servletContext = mock(ServletContext.class);
-        WroConfig.createInstance(servletContext);
-        WroConfig.getInstance();
-    }
-
     @Test
-    public void getInstanceSucceedsWhenInstanceCreatedAndModelAvailable() throws Exception {
-        ServletContext servletContext = mock(ServletContext.class);
-        ServletContextAttributeHelper servletContextAttributeHelper = mock(ServletContextAttributeHelper.class);
-        WroManagerFactory wroManagerFactory = mock(WroManagerFactory.class);
-        WroManager wroManager = PowerMockito.spy(new WroManager());
-        WroModelFactory wroModelFactory = mock(WroModelFactory.class);
+    public void getInstanceSucceedsWhenInstanceCreatedAndModelAvailable() {
+        when(this.context.getModel()).thenReturn(new WroModel());
 
-        whenNew(ServletContextAttributeHelper.class).withArguments(servletContext).thenReturn(servletContextAttributeHelper);
-        when(servletContextAttributeHelper.getManagerFactory()).thenReturn(wroManagerFactory);
-        when(wroManagerFactory.create()).thenReturn(wroManager);
-        when(wroManager.getModelFactory()).thenReturn(wroModelFactory);
-        when(wroModelFactory.create()).thenReturn(new WroModel());
-
-        WroConfig.createInstance(servletContext);
+        WroConfig.createInstance(this.context);
 
         assertNotNull("The wro configuration retrieved is null", WroConfig.getInstance());
     }
 
+    @Test
+    public void getInstanceHasLoadedTheModel() {
+        when(this.context.getModel()).thenReturn(this.getModel());
+
+        WroConfig.createInstance(this.context);
+        FilesGroup testGroup = WroConfig.getInstance().getGroup(TEST_GROUP);
+
+        assertThat("The test group has the wrong number of JS resources",
+                    testGroup.get(ResourceType.JS).size(),
+                    is(2));
+
+        assertThat("The test group has the wrong number of CSS resources",
+                    testGroup.get(ResourceType.CSS).size(),
+                    is(1));
+    }
+
+    private WroModel getModel() {
+        WroModel model = new WroModel();
+        Group group = new Group(TEST_GROUP);
+        Resource js1 = Resource.create("a", ResourceType.JS);
+        Resource js2 = Resource.create("b", ResourceType.JS);
+        Resource css1 = Resource.create("c", ResourceType.CSS);
+
+        group.setResources(Arrays.asList(js1, js2, css1));
+        model.setGroups(Arrays.asList(group));
+
+        return model;
+    }
 }

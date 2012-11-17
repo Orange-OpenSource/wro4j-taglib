@@ -6,19 +6,14 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import ro.isdc.wro.http.support.ServletContextAttributeHelper;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
-import static org.powermock.api.mockito.PowerMockito.doNothing;
-import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
-import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 /**
  * User: atata
@@ -29,7 +24,7 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 @PrepareForTest(WroConfig.class)
 public class WroContextListenerTest {
     @After
-    public void cleanUp() {
+    public void tearDown() {
         WroConfig.instance = null;
     }
 
@@ -54,6 +49,6 @@ public class WroContextListenerTest {
         contextListener.contextInitialized(servletContextEvent);
 
         verifyStatic(Mockito.times(1));
-        WroConfig.createInstance(servletContext);
+        WroConfig.createInstance(Mockito.any(Context.class));
     }
 }
