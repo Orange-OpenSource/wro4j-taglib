@@ -1,5 +1,6 @@
 package com.orange.wro.taglib.config;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -27,6 +28,11 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(WroConfig.class)
 public class WroContextListenerTest {
+    @After
+    public void cleanUp() {
+        WroConfig.instance = null;
+    }
+
     @Test(expected = ConfigurationException.class)
     public void contextListenerDoesNotCreateWroConfigInstanceAtCreationTime() {
         WroContextListener contextListener = new WroContextListener();
