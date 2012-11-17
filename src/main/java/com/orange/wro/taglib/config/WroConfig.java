@@ -43,7 +43,7 @@ import ro.isdc.wro.model.resource.ResourceType;
 public class WroConfig {
 	private static final String WRO_BASE_URL_ATTRIBUTE = "com.orange.wro.base.url";
 
-	private static WroConfig instance;
+	/* package */ static WroConfig instance;
 
 	private Map<String, FilesGroup> groups;
 	private ServletContext servletContext;
@@ -68,8 +68,7 @@ public class WroConfig {
 		/* we should somehow inject this model so that we could
 		 * test this class more easily.
 		 */
-		ServletContextAttributeHelper helper = new ServletContextAttributeHelper(servletContext);
-		WroModel model = helper.getManagerFactory().create().getModelFactory().create();
+		WroModel model = this.getModel();
 		
 		groups = new HashMap<String, FilesGroup>();
 		
@@ -83,6 +82,23 @@ public class WroConfig {
 			groups.put(groupName, filesGroup);
 		}
 	}
+
+    private WroModel getModel() {
+        WroModel wroModel = null;
+
+        try {
+            wroModel = this.getServletContextAttributeHelper(this.servletContext).
+                                    getManagerFactory().create().getModelFactory().create();
+        } catch (Exception ex) {
+            throw new ConfigurationException("Unable to retrieve wro4j model");
+        }
+
+        return wroModel;
+    }
+
+    private ServletContextAttributeHelper getServletContextAttributeHelper(ServletContext servletContext) {
+        return new ServletContextAttributeHelper(servletContext);
+    }
 
 	private List<String> getFilesFor(Group group, ResourceType resourceType) {
 		List<String> result = new ArrayList<String>();
