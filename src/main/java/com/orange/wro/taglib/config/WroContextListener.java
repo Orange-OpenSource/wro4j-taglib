@@ -16,8 +16,16 @@
 
 package com.orange.wro.taglib.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 
 /**
@@ -25,6 +33,8 @@ import javax.servlet.ServletContextListener;
  * 
  */
 public class WroContextListener implements ServletContextListener {
+    private final Logger logger = LoggerFactory.getLogger(WroContextListener.class);
+    /* package */ static final String ERROR_TEMPLATE = "Exception while {} the wro4j-taglib properties file ({}). Details: {}";
 
 	/**
 	 * Default constructor.
@@ -37,9 +47,42 @@ public class WroContextListener implements ServletContextListener {
 	 */
 	@Override
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
-        Context context = new Context(servletContextEvent.getServletContext());
+        ServletContext servletContext = servletContextEvent.getServletContext();
+        Context context = new Context(servletContext);
+
+        this.initializeProperties(context);
 		WroConfig.createInstance(context);
 	}
+
+    private void initializeProperties(Context context) {
+        ServletContext servletContext = context.getServletContext();
+
+        Properties properties = new Properties();
+        InputStream propertyStream = null;
+
+        try {
+            propertyStream = servletContext.getResourceAsStream(context.getPropertiesLocation());
+
+            if (propertyStream != null) {
+                properties.load(propertyStream);
+
+                servletContext.setAttribute(
+                    Context.WRO_RESOURCE_DOMAIN_ATTRIBUTE,
+                    properties.get(Context.WRO_RESOURCE_DOMAIN_ATTRIBUTE)
+                );
+            }
+        } catch (FileNotFoundException fnfEx) {
+            logger.warn(ERROR_TEMPLATE, "looking for", context.getPropertiesLocation(), fnfEx.getMessage());
+        } catch (IOException ioEx) {
+            logger.warn(ERROR_TEMPLATE, "loading", context.getPropertiesLocation(), ioEx.getMessage());
+        } finally {
+            try {
+                if (propertyStream != null) propertyStream.close();
+            } catch (IOException ioEx) {
+                logger.warn(ERROR_TEMPLATE, "closing", context.getPropertiesLocation(), ioEx.getMessage());
+            }
+        }
+    }
 
 	/**
 	 * @see ServletContextListener#contextDestroyed(ServletContextEvent)

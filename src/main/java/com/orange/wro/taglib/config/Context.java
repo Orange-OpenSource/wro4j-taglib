@@ -12,11 +12,30 @@ import java.util.Set;
  * Time: 19:28
  */
 public class Context {
+    public static final String WRO_RESOURCE_DOMAIN_ATTRIBUTE = "com.orange.wro.resource.domain";
+    private static final String WRO_PROPERTIES_LOCATION_ATTRIBUTE = "com.orange.wro.properties.location";
     private static final String WRO_BASE_URL_ATTRIBUTE = "com.orange.wro.base.url";
+
     final ServletContext servletContext;
 
     public Context(ServletContext servletContext) {
         this.servletContext = servletContext;
+    }
+
+    public ServletContext getServletContext() {
+        return this.servletContext;
+    }
+
+    public String getBaseUrl() {
+        return this.servletContext.getInitParameter(WRO_BASE_URL_ATTRIBUTE);
+    }
+
+    public String getResourceDomain() {
+        return this.servletContext.getInitParameter(WRO_RESOURCE_DOMAIN_ATTRIBUTE);
+    }
+
+    public String getPropertiesLocation() {
+        return this.servletContext.getInitParameter(WRO_PROPERTIES_LOCATION_ATTRIBUTE);
     }
 
     public WroModel getModel() {
@@ -34,7 +53,7 @@ public class Context {
 
     @SuppressWarnings("unchecked")
     public Set<String> getResourcePaths() {
-        String wroBaseUrl = this.servletContext.getInitParameter(WRO_BASE_URL_ATTRIBUTE);
+        String wroBaseUrl = this.getBaseUrl();
         return this.servletContext.getResourcePaths(wroBaseUrl);
     }
 }

@@ -43,12 +43,14 @@
 			</plugin>
 		</plugins>
 	</build>
+
 	<dependencies>
 		<dependency>
 			<groupId>ro.isdc.wro4j</groupId>
 			<artifactId>wro4j-core</artifactId>
 			<version>${wro4j.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
@@ -56,6 +58,7 @@
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>jsp-api</artifactId>
@@ -63,38 +66,65 @@
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.1</version>
 		</dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.1</version>
+        </dependency>
+
+        <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+          <version>1.7.2</version>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
             <scope>test</scope>
         </dependency>
+
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>1.9.0</version>
 			<scope>test</scope>
 		</dependency>
+
         <dependency>
            <groupId>org.powermock</groupId>
            <artifactId>powermock-api-mockito</artifactId>
            <version>${powermock.version}</version>
            <scope>test</scope>
         </dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.1</version>
-		</dependency>
+
         <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-module-junit4</artifactId>
             <version>1.4.10</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-core</artifactId>
+          <version>1.0.7</version>
+          <scope>test</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+          <version>1.0.7</version>
+          <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -130,11 +160,11 @@
 	</profiles>
 
 	<scm>
-		<connection>scm:git:https://github.com/Orange-OpenSource/wro4j-taglib.git</connection>
+        <connection>scm:git:https://github.com/Orange-OpenSource/wro4j-taglib.git</connection>
 		<developerConnection>scm:git:https://github.com/Orange-OpenSource/wro4j-taglib.git</developerConnection>
 		<url>https://github.com/Orange-OpenSource/wro4j-taglib</url>
-	  <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
 	<licenses>
 		<license>
@@ -143,10 +173,12 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+
 	<organization>
 		<name>Orange</name>
 		<url>http://www.orange.com</url>
 	</organization>
+
 	<developers>
 		<developer>
 			<id>julien</id>
