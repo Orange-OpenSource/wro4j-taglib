@@ -19,12 +19,14 @@ package com.orange.wro.taglib.tag;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 import com.orange.wro.taglib.config.ConfigurationException;
+import com.orange.wro.taglib.config.Context;
 import com.orange.wro.taglib.config.FilesGroup;
 import com.orange.wro.taglib.config.WroConfig;
 
@@ -99,7 +101,7 @@ public abstract class IncludeTag extends SimpleTagSupport {
 	 * This can makes the output prettier, but this
 	 * really depends on your taste.
 	 * 
-	 * @param exploded a boolean indicating whether we
+	 * @param pretty a boolean indicating whether we
 	 * want a pretty output. 
 	 */
 	// TODO: makes this a servlet context param ?
@@ -147,9 +149,20 @@ public abstract class IncludeTag extends SimpleTagSupport {
 
 	private void writeLink(StringBuilder builder, String src) {
 		PageContext context = (PageContext) getJspContext();
+        ServletContext servletContext = context.getServletContext();
+
+        String resourceDomain = (String) servletContext.
+                getAttribute(Context.WRO_RESOURCE_DOMAIN_ATTRIBUTE);
+
 		String contextPath = ((HttpServletRequest) context.getRequest())
 				.getContextPath();
+
 		String link = String.format(getMarkupFormat(), quote(contextPath + src));
+
+        if (resourceDomain !=null) {
+            builder.append(resourceDomain);
+        }
+
 		builder.append(link);
 
 		if (pretty) {
