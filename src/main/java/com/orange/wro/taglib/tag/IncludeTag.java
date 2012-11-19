@@ -153,15 +153,12 @@ public abstract class IncludeTag extends SimpleTagSupport {
 
         String resourceDomain = (String) servletContext.
                 getAttribute(Context.WRO_RESOURCE_DOMAIN_ATTRIBUTE);
+        if (resourceDomain == null) resourceDomain = "";
 
 		String contextPath = ((HttpServletRequest) context.getRequest())
 				.getContextPath();
 
-		String link = String.format(getMarkupFormat(), quote(contextPath + src));
-
-        if (resourceDomain !=null) {
-            builder.append(resourceDomain);
-        }
+		String link = String.format(getMarkupFormat(), quote(resourceDomain + contextPath + src));
 
 		builder.append(link);
 
