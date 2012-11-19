@@ -21,7 +21,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import ro.isdc.wro.model.resource.ResourceType;
 
 public class AsJsArrayIncludeTag extends IncludeTag {
-	private final static String markupFormat = "'%s',";
 	private ResourceType groupType;
 
 	public void setGroupType(String groupType) {
@@ -32,8 +31,8 @@ public class AsJsArrayIncludeTag extends IncludeTag {
 		return groupType;
 	}
 
-	protected String getMarkupFormat() {
-		return markupFormat;
+	protected String getMarkupFormat(String src) {
+		return WroTagLibConstants.JS_ARRAY_MARKUP;
 	}
 
 	@Override

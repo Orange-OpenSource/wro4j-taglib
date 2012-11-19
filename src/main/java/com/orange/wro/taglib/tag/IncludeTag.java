@@ -133,6 +133,12 @@ public abstract class IncludeTag extends SimpleTagSupport {
 
 		for (String fileName : files) {
 			writeLink(builder, fileName);
+			
+			if (fileName.endsWith(".less")) {
+				getJspContext().setAttribute(WroTagLibConstants.LESS_INJECTED,
+						true);
+			
+			}
 		}
 	}
 
@@ -148,6 +154,10 @@ public abstract class IncludeTag extends SimpleTagSupport {
 	}
 
 	private void writeLink(StringBuilder builder, String src) {
+		writeLink(builder, src, getMarkupFormat(src));
+	}
+	
+	private void writeLink(StringBuilder builder, String src, String markup) {
 		PageContext context = (PageContext) getJspContext();
         ServletContext servletContext = context.getServletContext();
 
@@ -158,7 +168,7 @@ public abstract class IncludeTag extends SimpleTagSupport {
 		String contextPath = ((HttpServletRequest) context.getRequest())
 				.getContextPath();
 
-		String link = String.format(getMarkupFormat(), quote(resourceDomain + contextPath + src));
+		String link = String.format(markup, quote(resourceDomain + contextPath + src));
 
 		builder.append(link);
 
@@ -170,7 +180,7 @@ public abstract class IncludeTag extends SimpleTagSupport {
 	/**
 	 * @return the markup format to generate the markup from the file name.
 	 */
-	protected abstract String getMarkupFormat();
+	protected abstract String getMarkupFormat(String src);
 
 	/**
 	 * @return the resource type for this tag

@@ -15,6 +15,7 @@ public class Context {
     public static final String WRO_RESOURCE_DOMAIN_ATTRIBUTE = "com.orange.wro.resource.domain";
     private static final String WRO_PROPERTIES_LOCATION_ATTRIBUTE = "com.orange.wro.properties.location";
     private static final String WRO_BASE_URL_ATTRIBUTE = "com.orange.wro.base.url";
+    private static final String LESS_SCRIPT_ATTRIBUTE = "com.orange.wro.less.path";
 
     final ServletContext servletContext;
 
@@ -36,6 +37,10 @@ public class Context {
 
     public String getPropertiesLocation() {
         return this.servletContext.getInitParameter(WRO_PROPERTIES_LOCATION_ATTRIBUTE);
+    }
+
+    public String getLessPath() {
+        return servletContext.getInitParameter(LESS_SCRIPT_ATTRIBUTE);
     }
 
     public WroModel getModel() {

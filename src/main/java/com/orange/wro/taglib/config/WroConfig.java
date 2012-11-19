@@ -123,4 +123,8 @@ public class WroConfig {
 					"WroConfig was not correctly initialized");
 		}
 	}
+
+    public Context getContext() {
+        return this.context;
+    }
 }

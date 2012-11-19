@@ -16,18 +16,13 @@
 
 package com.orange.wro.taglib.tag;
 
-import ro.isdc.wro.model.resource.ResourceType;
+public abstract class WroTagLibConstants {
 
-public class StyleHtmlIncludeTag extends HtmlIncludeTag {
-	private static final ResourceType groupType = ResourceType.CSS;
+	public static final String LESS_INJECTED = "com.orange.wro.less.injected";
 	
-	protected ResourceType getGroupType() {
-		return groupType;
-	}
-	protected String getMarkupFormat(String src) {
-		if (src == null) return null;
-		return src.endsWith(".less")
-				? WroTagLibConstants.LESS_MARKUP
-				: WroTagLibConstants.CSS_MARKUP;
-	}
+	public static final String CSS_MARKUP = "<link rel='stylesheet' href='%s' />";
+	public static final String JS_ARRAY_MARKUP = "'%s',";
+	public static final String JS_MARKUP = "<script src='%s' type='text/javascript'></script>";
+	public static final String LESS_MARKUP = "<link rel='stylesheet/less' type='text/css' href='%s' />";
+	
 }
