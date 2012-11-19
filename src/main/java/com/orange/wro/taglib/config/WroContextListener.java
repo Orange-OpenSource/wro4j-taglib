@@ -22,6 +22,8 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -60,26 +62,35 @@ public class WroContextListener implements ServletContextListener {
         Properties properties = new Properties();
         InputStream propertyStream = null;
 
-        try {
-            propertyStream = servletContext.getResourceAsStream(context.getPropertiesLocation());
+        String propertyFilepath = context.getPropertiesLocation();
 
-            if (propertyStream != null) {
+        if (propertyFilepath == null) {
+            logger.info("No properties file to load");
+        } else {
+            logger.info("Trying to load properties file from {}", propertyFilepath);
+
+            try {
+                File propertyFile = new File(context.getPropertiesLocation());
+                propertyStream = new FileInputStream(propertyFile);
+
                 properties.load(propertyStream);
+
+                logger.info("...properties loaded successfully.");
 
                 servletContext.setAttribute(
                     Context.WRO_RESOURCE_DOMAIN_ATTRIBUTE,
                     properties.get(Context.WRO_RESOURCE_DOMAIN_ATTRIBUTE)
                 );
-            }
-        } catch (FileNotFoundException fnfEx) {
-            logger.warn(ERROR_TEMPLATE, "looking for", context.getPropertiesLocation(), fnfEx.getMessage());
-        } catch (IOException ioEx) {
-            logger.warn(ERROR_TEMPLATE, "loading", context.getPropertiesLocation(), ioEx.getMessage());
-        } finally {
-            try {
-                if (propertyStream != null) propertyStream.close();
+            } catch (FileNotFoundException fnfEx) {
+                logger.warn(ERROR_TEMPLATE, "looking for", context.getPropertiesLocation(), fnfEx.getMessage());
             } catch (IOException ioEx) {
-                logger.warn(ERROR_TEMPLATE, "closing", context.getPropertiesLocation(), ioEx.getMessage());
+                logger.warn(ERROR_TEMPLATE, "loading", context.getPropertiesLocation(), ioEx.getMessage());
+            } finally {
+                try {
+                    if (propertyStream != null) propertyStream.close();
+                } catch (IOException ioEx) {
+                    logger.warn(ERROR_TEMPLATE, "closing", context.getPropertiesLocation(), ioEx.getMessage());
+                }
             }
         }
     }
@@ -90,4 +101,8 @@ public class WroContextListener implements ServletContextListener {
 	@Override
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
 	}
+
+    private ClassLoader getClassLoader() {
+        return Thread.currentThread().getContextClassLoader();
+    }
 }
