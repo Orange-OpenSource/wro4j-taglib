@@ -1,3 +1,18 @@
+/*
+* Copyright 2011, 2012 France Télécom
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 package com.orange.wro.taglib.config;
 
 import org.junit.After;
@@ -26,69 +41,64 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
-/**
- * User: atata
- * Date: 17/11/12
- * Time: 02:39
- */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({WroConfig.class, WroManager.class})
 public class WroConfigTest {
-    public static final String TEST_GROUP = "testGroup";
-    ServletContext servletContext;
-    Context context;
+	public static final String TEST_GROUP = "testGroup";
+	ServletContext servletContext;
+	Context context;
 
-    @Before
-    public void setUp() {
-        this.servletContext = mock(ServletContext.class);
-        this.context = mock(Context.class);
-    }
+	@Before
+	public void setUp() {
+		this.servletContext = mock(ServletContext.class);
+		this.context = mock(Context.class);
+	}
 
-    @After
-    public void tearDown() {
-        WroConfig.instance = null;
-    }
+	@After
+	public void tearDown() {
+		WroConfig.instance = null;
+	}
 
-    @Test(expected = ConfigurationException.class)
-    public void getInstanceFailsWhenNoInstanceAvailable() {
-        WroConfig.getInstance();
-    }
+	@Test(expected = ConfigurationException.class)
+	public void getInstanceFailsWhenNoInstanceAvailable() {
+		WroConfig.getInstance();
+	}
 
-    @Test
-    public void getInstanceSucceedsWhenInstanceCreatedAndModelAvailable() {
-        when(this.context.getModel()).thenReturn(new WroModel());
+	@Test
+	public void getInstanceSucceedsWhenInstanceCreatedAndModelAvailable() {
+		when(this.context.getModel()).thenReturn(new WroModel());
 
-        WroConfig.createInstance(this.context);
+		WroConfig.createInstance(this.context);
 
-        assertNotNull("The wro configuration retrieved is null", WroConfig.getInstance());
-    }
+		assertNotNull("The wro configuration retrieved is null", WroConfig.getInstance());
+	}
 
-    @Test
-    public void getInstanceHasLoadedTheModel() {
-        when(this.context.getModel()).thenReturn(this.getModel());
+	@Test
+	public void getInstanceHasLoadedTheModel() {
+		when(this.context.getModel()).thenReturn(this.getModel());
 
-        WroConfig.createInstance(this.context);
-        FilesGroup testGroup = WroConfig.getInstance().getGroup(TEST_GROUP);
+		WroConfig.createInstance(this.context);
+		FilesGroup testGroup = WroConfig.getInstance().getGroup(TEST_GROUP);
 
-        assertThat("The test group has the wrong number of JS resources",
-                    testGroup.get(ResourceType.JS).size(),
-                    is(2));
+		assertThat("The test group has the wrong number of JS resources",
+				testGroup.get(ResourceType.JS).size(),
+				is(2));
 
-        assertThat("The test group has the wrong number of CSS resources",
-                    testGroup.get(ResourceType.CSS).size(),
-                    is(1));
-    }
+		assertThat("The test group has the wrong number of CSS resources",
+				testGroup.get(ResourceType.CSS).size(),
+				is(1));
+	}
 
-    private WroModel getModel() {
-        WroModel model = new WroModel();
-        Group group = new Group(TEST_GROUP);
-        Resource js1 = Resource.create("a", ResourceType.JS);
-        Resource js2 = Resource.create("b", ResourceType.JS);
-        Resource css1 = Resource.create("c", ResourceType.CSS);
+	private WroModel getModel() {
+		WroModel model = new WroModel();
+		Group group = new Group(TEST_GROUP);
+		Resource js1 = Resource.create("a", ResourceType.JS);
+		Resource js2 = Resource.create("b", ResourceType.JS);
+		Resource css1 = Resource.create("c", ResourceType.CSS);
 
-        group.setResources(Arrays.asList(js1, js2, css1));
-        model.setGroups(Arrays.asList(group));
+		group.setResources(Arrays.asList(js1, js2, css1));
+		model.setGroups(Arrays.asList(group));
 
-        return model;
-    }
+		return model;
+	}
 }
