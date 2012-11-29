@@ -69,7 +69,7 @@ public class WroContextListener implements ServletContextListener {
 			logger.info("Trying to load properties file from {}", propertyFilepath);
 
 			try {
-				File propertyFile = new File(context.getPropertiesLocation());
+				File propertyFile = new File(propertyFilepath);
 				propertyStream = new FileInputStream(propertyFile);
 
 				properties.load(propertyStream);

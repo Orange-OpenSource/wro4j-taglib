@@ -45,23 +45,27 @@ import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
-/**
- * User: atata
- * Date: 17/11/12
- * Time: 02:05
- */
+
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({WroConfig.class, WroContextListener.class, LoggerFactory.class})
 public class WroContextListenerTest {
-	private static final String PROPERTIES_LOCATION = "wro4j-taglib.temp.properties";
+	private static final String PROPERTIES_LOCATION;
 	private static final String RESOURCE_DOMAIN = "//www.fake.domain";
 
 	private ServletContextEvent servletContextEvent;
 	private ServletContext servletContext;
 
+	static {
+		StringBuilder propertiesLocation = new StringBuilder(System.getProperty("java.io.tmpdir"));
+		propertiesLocation.append("wro4j-taglib.temp.properties");
+
+		PROPERTIES_LOCATION = propertiesLocation.toString();
+	}
 
 	@Before
 	public void setUp() {
+		new File(PROPERTIES_LOCATION).delete();
+
 		this.servletContextEvent = mock(ServletContextEvent.class);
 		this.servletContext = mock(ServletContext.class);
 
@@ -71,7 +75,6 @@ public class WroContextListenerTest {
 	@After
 	public void tearDown() {
 		WroConfig.instance = null;
-		new File(PROPERTIES_LOCATION).delete();
 	}
 
 	@Test(expected = ConfigurationException.class)
@@ -101,7 +104,6 @@ public class WroContextListenerTest {
 		when(LoggerFactory.getLogger(any(Class.class))).thenReturn(logger);
 
 		this.createContext();
-		this.createProperties(false);
 
 		when(servletContext.getResourceAsStream(anyString())).then(this.getProperties());
 
@@ -119,7 +121,7 @@ public class WroContextListenerTest {
 	@Test
 	public void contextListenerSetsPropertiesFromFileToServletContext() throws Exception {
 		this.createContext();
-		this.createProperties(true);
+		this.createProperties();
 
 		when(servletContext.getResourceAsStream(anyString())).then(this.getProperties());
 
@@ -131,13 +133,10 @@ public class WroContextListenerTest {
 
 
 	/**
-	 * Creates a property file in the test location,
-	 * adds a property to it and changes the file permissions
-	 * depending on the input parameter.
-	 *
-	 * @param readable
+	 * Creates a property file in the test location and
+	 * adds a property to it.
 	 */
-	private void createProperties(boolean readable) {
+	private void createProperties() {
 		File propertiesFile = new File(PROPERTIES_LOCATION);
 		Properties properties = new Properties();
 		properties.setProperty(Context.WRO_RESOURCE_DOMAIN_ATTRIBUTE, RESOURCE_DOMAIN);
@@ -146,7 +145,6 @@ public class WroContextListenerTest {
 		try {
 			destination = new FileOutputStream(propertiesFile);
 			properties.store(destination, "");
-			propertiesFile.setReadable(readable, false);
 		} catch (IOException ioEx) {
 			System.out.println(ioEx.getMessage());
 		} finally {
