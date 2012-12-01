@@ -94,7 +94,7 @@ public class WroContextListenerTest {
 		contextListener.contextInitialized(this.servletContextEvent);
 
 		verifyStatic();
-		WroConfig.createInstance(any(Context.class));
+		WroConfig.createInstance(any(WroTagLibContext.class));
 	}
 
 	@Test
@@ -128,7 +128,7 @@ public class WroContextListenerTest {
 		WroContextListener contextListener = new WroContextListener();
 		contextListener.contextInitialized(this.servletContextEvent);
 
-		verify(servletContext).setAttribute(eq(Context.WRO_RESOURCE_DOMAIN_ATTRIBUTE), anyObject());
+		verify(servletContext).setAttribute(eq(WroTagLibContext.WRO_RESOURCE_DOMAIN_KEY_ATTRIBUTE), anyObject());
 	}
 
 
@@ -139,7 +139,7 @@ public class WroContextListenerTest {
 	private void createProperties() {
 		File propertiesFile = new File(PROPERTIES_LOCATION);
 		Properties properties = new Properties();
-		properties.setProperty(Context.WRO_RESOURCE_DOMAIN_ATTRIBUTE, RESOURCE_DOMAIN);
+		properties.setProperty(WroTagLibContext.WRO_RESOURCE_DOMAIN_KEY_ATTRIBUTE, RESOURCE_DOMAIN);
 		FileOutputStream destination = null;
 
 		try {
@@ -157,11 +157,11 @@ public class WroContextListenerTest {
 	}
 
 	private void createContext() throws Exception {
-		Context context = mock(Context.class);
+		WroTagLibContext wroTagLibContext = mock(WroTagLibContext.class);
 
-		whenNew(Context.class).withArguments(this.servletContext).thenReturn(context);
-		when(context.getPropertiesLocation()).thenReturn(PROPERTIES_LOCATION);
-		when(context.getServletContext()).thenReturn(this.servletContext);
+		whenNew(WroTagLibContext.class).withArguments(this.servletContext).thenReturn(wroTagLibContext);
+		when(wroTagLibContext.getPropertiesLocation()).thenReturn(PROPERTIES_LOCATION);
+		when(wroTagLibContext.getServletContext()).thenReturn(this.servletContext);
 	}
 
 	private Answer getProperties() {

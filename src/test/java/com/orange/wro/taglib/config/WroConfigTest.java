@@ -19,14 +19,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import ro.isdc.wro.http.support.ServletContextAttributeHelper;
 import ro.isdc.wro.manager.WroManager;
-import ro.isdc.wro.manager.factory.WroManagerFactory;
 import ro.isdc.wro.model.WroModel;
-import ro.isdc.wro.model.factory.WroModelFactory;
 import ro.isdc.wro.model.group.Group;
 import ro.isdc.wro.model.resource.Resource;
 import ro.isdc.wro.model.resource.ResourceType;
@@ -46,12 +42,12 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 public class WroConfigTest {
 	public static final String TEST_GROUP = "testGroup";
 	ServletContext servletContext;
-	Context context;
+	WroTagLibContext wroTagLibContext;
 
 	@Before
 	public void setUp() {
 		this.servletContext = mock(ServletContext.class);
-		this.context = mock(Context.class);
+		this.wroTagLibContext = mock(WroTagLibContext.class);
 	}
 
 	@After
@@ -66,18 +62,18 @@ public class WroConfigTest {
 
 	@Test
 	public void getInstanceSucceedsWhenInstanceCreatedAndModelAvailable() {
-		when(this.context.getModel()).thenReturn(new WroModel());
+		when(this.wroTagLibContext.getModel()).thenReturn(new WroModel());
 
-		WroConfig.createInstance(this.context);
+		WroConfig.createInstance(this.wroTagLibContext);
 
 		assertNotNull("The wro configuration retrieved is null", WroConfig.getInstance());
 	}
 
 	@Test
 	public void getInstanceHasLoadedTheModel() {
-		when(this.context.getModel()).thenReturn(this.getModel());
+		when(this.wroTagLibContext.getModel()).thenReturn(this.getModel());
 
-		WroConfig.createInstance(this.context);
+		WroConfig.createInstance(this.wroTagLibContext);
 		FilesGroup testGroup = WroConfig.getInstance().getGroup(TEST_GROUP);
 
 		assertThat("The test group has the wrong number of JS resources",

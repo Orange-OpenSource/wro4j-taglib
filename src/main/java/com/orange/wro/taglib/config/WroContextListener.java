@@ -49,19 +49,19 @@ public class WroContextListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
 		ServletContext servletContext = servletContextEvent.getServletContext();
-		Context context = new Context(servletContext);
+		WroTagLibContext wroTagLibContext = new WroTagLibContext(servletContext);
 
-		this.initializeProperties(context);
-		WroConfig.createInstance(context);
+		this.initializeProperties(wroTagLibContext);
+		WroConfig.createInstance(wroTagLibContext);
 	}
 
-	private void initializeProperties(Context context) {
-		ServletContext servletContext = context.getServletContext();
+	private void initializeProperties(WroTagLibContext wroTagLibContext) {
+		ServletContext servletContext = wroTagLibContext.getServletContext();
 
 		Properties properties = new Properties();
 		InputStream propertyStream = null;
 
-		String propertyFilepath = context.getPropertiesLocation();
+		String propertyFilepath = wroTagLibContext.getPropertiesLocation();
 
 		if (propertyFilepath == null) {
 			logger.info("No properties file to load");
@@ -77,18 +77,18 @@ public class WroContextListener implements ServletContextListener {
 				logger.info("...properties loaded successfully.");
 
 				servletContext.setAttribute(
-						Context.WRO_RESOURCE_DOMAIN_ATTRIBUTE,
-						properties.get(Context.WRO_RESOURCE_DOMAIN_ATTRIBUTE)
+						WroTagLibContext.WRO_RESOURCE_DOMAIN_KEY_ATTRIBUTE,
+						properties.get(WroTagLibContext.WRO_RESOURCE_DOMAIN_KEY_ATTRIBUTE)
 				);
 			} catch (FileNotFoundException fnfEx) {
-				logger.warn(ERROR_TEMPLATE, "looking for", context.getPropertiesLocation(), fnfEx.getMessage());
+				logger.warn(ERROR_TEMPLATE, "looking for", wroTagLibContext.getPropertiesLocation(), fnfEx.getMessage());
 			} catch (IOException ioEx) {
-				logger.warn(ERROR_TEMPLATE, "loading", context.getPropertiesLocation(), ioEx.getMessage());
+				logger.warn(ERROR_TEMPLATE, "loading", wroTagLibContext.getPropertiesLocation(), ioEx.getMessage());
 			} finally {
 				try {
 					if (propertyStream != null) propertyStream.close();
 				} catch (IOException ioEx) {
-					logger.warn(ERROR_TEMPLATE, "closing", context.getPropertiesLocation(), ioEx.getMessage());
+					logger.warn(ERROR_TEMPLATE, "closing", wroTagLibContext.getPropertiesLocation(), ioEx.getMessage());
 				}
 			}
 		}

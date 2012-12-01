@@ -21,15 +21,15 @@ import ro.isdc.wro.model.WroModel;
 import javax.servlet.ServletContext;
 import java.util.Set;
 
-public class Context {
-    public static final String WRO_RESOURCE_DOMAIN_ATTRIBUTE = "com.orange.wro.resource.domain";
+public class WroTagLibContext {
+    public static final String WRO_RESOURCE_DOMAIN_KEY_ATTRIBUTE = "com.orange.wro.resource.domain";
     private static final String WRO_PROPERTIES_LOCATION_ATTRIBUTE = "com.orange.wro.properties.location";
     private static final String WRO_BASE_URL_ATTRIBUTE = "com.orange.wro.base.url";
     private static final String LESS_SCRIPT_ATTRIBUTE = "com.orange.wro.less.path";
 
     final ServletContext servletContext;
 
-    public Context(ServletContext servletContext) {
+    public WroTagLibContext(ServletContext servletContext) {
         this.servletContext = servletContext;
     }
 
@@ -41,8 +41,8 @@ public class Context {
         return this.servletContext.getInitParameter(WRO_BASE_URL_ATTRIBUTE);
     }
 
-    public String getResourceDomain() {
-        return this.servletContext.getInitParameter(WRO_RESOURCE_DOMAIN_ATTRIBUTE);
+    public String getResourceDomainKey() {
+        return this.servletContext.getInitParameter(WRO_RESOURCE_DOMAIN_KEY_ATTRIBUTE);
     }
 
     public String getPropertiesLocation() {

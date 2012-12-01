@@ -26,7 +26,7 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 import com.orange.wro.taglib.config.ConfigurationException;
-import com.orange.wro.taglib.config.Context;
+import com.orange.wro.taglib.config.WroTagLibContext;
 import com.orange.wro.taglib.config.FilesGroup;
 import com.orange.wro.taglib.config.WroConfig;
 
@@ -162,7 +162,7 @@ public abstract class IncludeTag extends SimpleTagSupport {
         ServletContext servletContext = context.getServletContext();
 
         String resourceDomain = (String) servletContext.
-                getAttribute(Context.WRO_RESOURCE_DOMAIN_ATTRIBUTE);
+                getAttribute(WroTagLibContext.WRO_RESOURCE_DOMAIN_KEY_ATTRIBUTE);
         if (resourceDomain == null) resourceDomain = "";
 
 		String contextPath = ((HttpServletRequest) context.getRequest())

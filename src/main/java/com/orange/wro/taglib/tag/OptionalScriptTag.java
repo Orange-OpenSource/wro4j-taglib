@@ -23,7 +23,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
-import com.orange.wro.taglib.config.Context;
+import com.orange.wro.taglib.config.WroTagLibContext;
 import org.apache.commons.lang3.StringUtils;
 
 import com.orange.wro.taglib.config.WroConfig;
@@ -33,7 +33,7 @@ public class OptionalScriptTag extends SimpleTagSupport {
 	@Override
 	public void doTag() throws JspException, IOException {
 
-		Context context = WroConfig.getInstance().getContext();
+		WroTagLibContext wroTagLibContext = WroConfig.getInstance().getWroTagLibContext();
 		PageContext pageContext = (PageContext) getJspContext();
 		StringBuilder builder = new StringBuilder();
 		
@@ -41,7 +41,7 @@ public class OptionalScriptTag extends SimpleTagSupport {
 		boolean isLessNeeded = lessObj == null ? false : (Boolean)lessObj;
 		
 		if (isLessNeeded) {
-			writeScript(pageContext, builder, context.getLessPath());
+			writeScript(pageContext, builder, wroTagLibContext.getLessPath());
 		}
 		
 		pageContext.getOut().append(builder);

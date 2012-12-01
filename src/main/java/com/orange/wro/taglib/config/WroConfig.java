@@ -40,7 +40,7 @@ public class WroConfig {
 	/* package */ static WroConfig instance;
 
 	private Map<String, FilesGroup> groups;
-	private Context context;
+	private WroTagLibContext wroTagLibContext;
 	private boolean initialized = false;
 
 	public static WroConfig getInstance() throws ConfigurationException {
@@ -59,7 +59,7 @@ public class WroConfig {
 	}
 
 	private void loadConfig() throws ConfigurationException {
-		WroModel model = this.context.getModel();
+		WroModel model = this.wroTagLibContext.getModel();
 		
 		groups = new HashMap<String, FilesGroup>();
 		
@@ -91,7 +91,7 @@ public class WroConfig {
 	 * However, it's difficult to make it work with WTP and m2e-wro4j eclipse plugin.
 	 */
 	private void loadMinimizedFiles() {
-		Set<String> resourcePaths = this.context.getResourcePaths();
+		Set<String> resourcePaths = this.wroTagLibContext.getResourcePaths();
 
 		if (resourcePaths == null) {
 			return;
@@ -108,10 +108,10 @@ public class WroConfig {
 		}
 	}
 
-	/* package */static synchronized void createInstance(Context context) {
+	/* package */static synchronized void createInstance(WroTagLibContext wroTagLibContext) {
 		if (instance == null) {
 			instance = new WroConfig();
-			instance.context = context;
+			instance.wroTagLibContext = wroTagLibContext;
 		}
 	}
 
@@ -124,7 +124,7 @@ public class WroConfig {
 		}
 	}
 
-    public Context getContext() {
-        return this.context;
+    public WroTagLibContext getWroTagLibContext() {
+        return this.wroTagLibContext;
     }
 }
