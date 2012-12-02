@@ -16,27 +16,15 @@
 
 package com.orange.wro.taglib.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 
 /**
  * Application Lifecycle Listener implementation class WroContextListener
  */
 public class WroContextListener implements ServletContextListener {
-	private final Logger logger = LoggerFactory.getLogger(WroContextListener.class);
-	/* package */ static final String ERROR_TEMPLATE = "Exception while {} the wro4j-taglib properties file ({}). Details: {}";
-
 	/**
 	 * Default constructor.
 	 */
@@ -49,59 +37,16 @@ public class WroContextListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
 		ServletContext servletContext = servletContextEvent.getServletContext();
-		WroTagLibContext wroTagLibContext = new WroTagLibContext(servletContext);
+		WroTagLibConfig wroTagLibConfig = new WroTagLibConfig(servletContext);
 
-		this.initializeProperties(wroTagLibContext);
-		WroConfig.createInstance(wroTagLibContext);
+		WroConfig.createInstance(wroTagLibConfig);
 	}
 
-	private void initializeProperties(WroTagLibContext wroTagLibContext) {
-		ServletContext servletContext = wroTagLibContext.getServletContext();
-
-		Properties properties = new Properties();
-		InputStream propertyStream = null;
-
-		String propertyFilepath = wroTagLibContext.getPropertiesLocation();
-
-		if (propertyFilepath == null) {
-			logger.info("No properties file to load");
-		} else {
-			logger.info("Trying to load properties file from {}", propertyFilepath);
-
-			try {
-				File propertyFile = new File(propertyFilepath);
-				propertyStream = new FileInputStream(propertyFile);
-
-				properties.load(propertyStream);
-
-				logger.info("...properties loaded successfully.");
-
-				servletContext.setAttribute(
-						WroTagLibContext.WRO_RESOURCE_DOMAIN_KEY_ATTRIBUTE,
-						properties.get(WroTagLibContext.WRO_RESOURCE_DOMAIN_KEY_ATTRIBUTE)
-				);
-			} catch (FileNotFoundException fnfEx) {
-				logger.warn(ERROR_TEMPLATE, "looking for", wroTagLibContext.getPropertiesLocation(), fnfEx.getMessage());
-			} catch (IOException ioEx) {
-				logger.warn(ERROR_TEMPLATE, "loading", wroTagLibContext.getPropertiesLocation(), ioEx.getMessage());
-			} finally {
-				try {
-					if (propertyStream != null) propertyStream.close();
-				} catch (IOException ioEx) {
-					logger.warn(ERROR_TEMPLATE, "closing", wroTagLibContext.getPropertiesLocation(), ioEx.getMessage());
-				}
-			}
-		}
-	}
 
 	/**
 	 * @see ServletContextListener#contextDestroyed(ServletContextEvent)
 	 */
 	@Override
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
-	}
-
-	private ClassLoader getClassLoader() {
-		return Thread.currentThread().getContextClassLoader();
 	}
 }

@@ -16,24 +16,21 @@
 
 package com.orange.wro.taglib.tag;
 
-import java.io.IOException;
+import com.orange.wro.taglib.config.WroConfig;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
-
-import com.orange.wro.taglib.config.WroTagLibContext;
-import org.apache.commons.lang3.StringUtils;
-
-import com.orange.wro.taglib.config.WroConfig;
+import java.io.IOException;
 
 public class OptionalScriptTag extends SimpleTagSupport {
 
 	@Override
 	public void doTag() throws JspException, IOException {
 
-		WroTagLibContext wroTagLibContext = WroConfig.getInstance().getWroTagLibContext();
+		WroConfig wroConfig = WroConfig.getInstance();
 		PageContext pageContext = (PageContext) getJspContext();
 		StringBuilder builder = new StringBuilder();
 		
@@ -41,7 +38,7 @@ public class OptionalScriptTag extends SimpleTagSupport {
 		boolean isLessNeeded = lessObj == null ? false : (Boolean)lessObj;
 		
 		if (isLessNeeded) {
-			writeScript(pageContext, builder, wroTagLibContext.getLessPath());
+			writeScript(pageContext, builder, wroConfig.getWroTagLibConfig().getLessPath());
 		}
 		
 		pageContext.getOut().append(builder);

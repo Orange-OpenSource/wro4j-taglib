@@ -42,12 +42,12 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 public class WroConfigTest {
 	public static final String TEST_GROUP = "testGroup";
 	ServletContext servletContext;
-	WroTagLibContext wroTagLibContext;
+	WroTagLibConfig wroTagLibConfig;
 
 	@Before
 	public void setUp() {
 		this.servletContext = mock(ServletContext.class);
-		this.wroTagLibContext = mock(WroTagLibContext.class);
+		this.wroTagLibConfig = mock(WroTagLibConfig.class);
 	}
 
 	@After
@@ -62,18 +62,18 @@ public class WroConfigTest {
 
 	@Test
 	public void getInstanceSucceedsWhenInstanceCreatedAndModelAvailable() {
-		when(this.wroTagLibContext.getModel()).thenReturn(new WroModel());
+		when(this.wroTagLibConfig.getModel()).thenReturn(new WroModel());
 
-		WroConfig.createInstance(this.wroTagLibContext);
+		WroConfig.createInstance(this.wroTagLibConfig);
 
 		assertNotNull("The wro configuration retrieved is null", WroConfig.getInstance());
 	}
 
 	@Test
 	public void getInstanceHasLoadedTheModel() {
-		when(this.wroTagLibContext.getModel()).thenReturn(this.getModel());
+		when(this.wroTagLibConfig.getModel()).thenReturn(this.getModel());
 
-		WroConfig.createInstance(this.wroTagLibContext);
+		WroConfig.createInstance(this.wroTagLibConfig);
 		FilesGroup testGroup = WroConfig.getInstance().getGroup(TEST_GROUP);
 
 		assertThat("The test group has the wrong number of JS resources",

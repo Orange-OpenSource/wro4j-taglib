@@ -16,21 +16,17 @@
 
 package com.orange.wro.taglib.tag;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.orange.wro.taglib.config.ConfigurationException;
+import com.orange.wro.taglib.config.FilesGroup;
+import com.orange.wro.taglib.config.WroConfig;
+import ro.isdc.wro.model.resource.ResourceType;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
-
-import com.orange.wro.taglib.config.ConfigurationException;
-import com.orange.wro.taglib.config.WroTagLibContext;
-import com.orange.wro.taglib.config.FilesGroup;
-import com.orange.wro.taglib.config.WroConfig;
-
-import ro.isdc.wro.model.resource.ResourceType;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is the base class for all IncludeTags, which contains
@@ -158,11 +154,10 @@ public abstract class IncludeTag extends SimpleTagSupport {
 	}
 	
 	private void writeLink(StringBuilder builder, String src, String markup) {
+		WroConfig config = WroConfig.getInstance();
 		PageContext context = (PageContext) getJspContext();
-        ServletContext servletContext = context.getServletContext();
 
-        String resourceDomain = (String) servletContext.
-                getAttribute(WroTagLibContext.WRO_RESOURCE_DOMAIN_KEY_ATTRIBUTE);
+        String resourceDomain = config.getWroTagLibConfig().getResourceDomain();
         if (resourceDomain == null) resourceDomain = "";
 
 		String contextPath = ((HttpServletRequest) context.getRequest())

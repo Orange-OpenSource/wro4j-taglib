@@ -24,11 +24,7 @@ import ro.isdc.wro.model.group.Group;
 import ro.isdc.wro.model.resource.Resource;
 import ro.isdc.wro.model.resource.ResourceType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This singleton keeps the minimized and unminimized files for
@@ -40,7 +36,7 @@ public class WroConfig {
 	/* package */ static WroConfig instance;
 
 	private Map<String, FilesGroup> groups;
-	private WroTagLibContext wroTagLibContext;
+	private WroTagLibConfig wroTagLibConfig;
 	private boolean initialized = false;
 
 	public static WroConfig getInstance() throws ConfigurationException {
@@ -59,7 +55,7 @@ public class WroConfig {
 	}
 
 	private void loadConfig() throws ConfigurationException {
-		WroModel model = this.wroTagLibContext.getModel();
+		WroModel model = this.wroTagLibConfig.getModel();
 		
 		groups = new HashMap<String, FilesGroup>();
 		
@@ -91,7 +87,7 @@ public class WroConfig {
 	 * However, it's difficult to make it work with WTP and m2e-wro4j eclipse plugin.
 	 */
 	private void loadMinimizedFiles() {
-		Set<String> resourcePaths = this.wroTagLibContext.getResourcePaths();
+		Set<String> resourcePaths = this.wroTagLibConfig.getResourcePaths();
 
 		if (resourcePaths == null) {
 			return;
@@ -108,10 +104,10 @@ public class WroConfig {
 		}
 	}
 
-	/* package */static synchronized void createInstance(WroTagLibContext wroTagLibContext) {
+	/* package */static synchronized void createInstance(WroTagLibConfig wroTagLibConfig) {
 		if (instance == null) {
 			instance = new WroConfig();
-			instance.wroTagLibContext = wroTagLibContext;
+			instance.wroTagLibConfig = wroTagLibConfig;
 		}
 	}
 
@@ -124,7 +120,7 @@ public class WroConfig {
 		}
 	}
 
-    public WroTagLibContext getWroTagLibContext() {
-        return this.wroTagLibContext;
+    public WroTagLibConfig getWroTagLibConfig() {
+        return this.wroTagLibConfig;
     }
 }
