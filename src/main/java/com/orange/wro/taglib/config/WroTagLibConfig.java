@@ -27,15 +27,17 @@ import java.util.Set;
  * @author Angelo Tata
  */
 public class WroTagLibConfig {
-	enum Param {
-		propertiesLocation("com.orange.wro.properties.location"),
-		baseUrl("com.orange.wro.base.url"),
-		lessPath("com.orange.wro.less.path"),
-		resourceDomain("com.orange.wro.resource.domain");
+	enum InitParam {
+		PROPERTIES_DEFAULT_LOCATION("com.orange.wro.properties.default.location"),
+		PROPERTIES_LOCATION("com.orange.wro.properties.location"),
+        PROPERTIES_FILENAME("com.orange.wro.properties.filename"),
+        BASE_URL("com.orange.wro.base.url"),
+		LESS_PATH("com.orange.wro.less.path"),
+		RESOURCE_DOMAIN("com.orange.wro.resource.domain");
 
 		private String key;
 
-		private Param(String key) {
+		private InitParam(String key) {
 			this.key = key;
 		}
 
@@ -50,14 +52,20 @@ public class WroTagLibConfig {
 
     public WroTagLibConfig(ServletContext servletContext) {
         this.servletContext = servletContext;
-        this.wroTagLibProperties = new WroTagLibProperties(this.servletContext.getInitParameter(Param.propertiesLocation.getKey()));
-		this.configValues =  new HashMap<String, String>(3);
+
+        this.wroTagLibProperties = new WroTagLibProperties(
+            this.servletContext.getInitParameter(InitParam.PROPERTIES_DEFAULT_LOCATION.getKey()),
+            this.servletContext.getInitParameter(InitParam.PROPERTIES_LOCATION.getKey()),
+            this.servletContext.getInitParameter(InitParam.PROPERTIES_FILENAME.getKey())
+        );
+
+        this.configValues =  new HashMap<String, String>(3);
 
 	    this.initialize();
     }
 
 	private void initialize() {
-		for (Param param : Param.values()) {
+		for (InitParam param : InitParam.values()) {
 			this.setParam(param.key);
 		}
 	}
@@ -75,15 +83,15 @@ public class WroTagLibConfig {
     }
 
     public String getBaseUrl() {
-	    return this.configValues.get(Param.baseUrl.getKey());
+	    return this.configValues.get(InitParam.BASE_URL.getKey());
     }
 
     public String getLessPath() {
-	    return this.configValues.get(Param.lessPath.key);
+	    return this.configValues.get(InitParam.LESS_PATH.key);
     }
 
 	public String getResourceDomain() {
-		return this.configValues.get(Param.resourceDomain.key);
+		return this.configValues.get(InitParam.RESOURCE_DOMAIN.key);
 	}
 
     public WroModel getModel() {

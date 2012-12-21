@@ -49,23 +49,11 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({WroConfig.class, WroContextListener.class, LoggerFactory.class})
 public class WroContextListenerTest {
-	private static final String PROPERTIES_LOCATION;
-	private static final String RESOURCE_DOMAIN = "//www.fake.domain";
-
 	private ServletContextEvent servletContextEvent;
 	private ServletContext servletContext;
 
-	static {
-		StringBuilder propertiesLocation = new StringBuilder(System.getProperty("java.io.tmpdir"));
-		propertiesLocation.append("wro4j-taglib.temp.properties");
-
-		PROPERTIES_LOCATION = propertiesLocation.toString();
-	}
-
 	@Before
 	public void setUp() {
-		new File(PROPERTIES_LOCATION).delete();
-
 		this.servletContextEvent = mock(ServletContextEvent.class);
 		this.servletContext = mock(ServletContext.class);
 
@@ -96,5 +84,4 @@ public class WroContextListenerTest {
 		verifyStatic();
 		WroConfig.createInstance(any(WroTagLibConfig.class));
 	}
-
 }
