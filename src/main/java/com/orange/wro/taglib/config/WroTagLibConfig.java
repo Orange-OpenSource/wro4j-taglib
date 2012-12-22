@@ -78,10 +78,6 @@ public class WroTagLibConfig {
 		}
 	}
 
-    public ServletContext getServletContext() {
-        return this.servletContext;
-    }
-
     public String getBaseUrl() {
 	    return this.configValues.get(InitParam.BASE_URL.getKey());
     }
@@ -94,16 +90,16 @@ public class WroTagLibConfig {
 		return this.configValues.get(InitParam.RESOURCE_DOMAIN.key);
 	}
 
-    public WroModel getModel() {
+    public WroModel getModel(ServletContextAttributeHelper servletContextAttributeHelper) {
         try {
-            return this.getServletContextAttributeHelper().
+            return servletContextAttributeHelper.
                 getManagerFactory().create().getModelFactory().create();
         } catch (Exception ex) {
             throw new ConfigurationException("Unable to retrieve wro4j model");
         }
     }
 
-    private ServletContextAttributeHelper getServletContextAttributeHelper() {
+    public ServletContextAttributeHelper getServletContextAttributeHelper() {
         return new ServletContextAttributeHelper(this.servletContext);
     }
 

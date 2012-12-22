@@ -55,7 +55,9 @@ public class WroConfig {
 	}
 
 	private void loadConfig() throws ConfigurationException {
-		WroModel model = this.wroTagLibConfig.getModel();
+		WroModel model = this.wroTagLibConfig.getModel(
+            this.wroTagLibConfig.getServletContextAttributeHelper()
+        );
 		
 		groups = new HashMap<String, FilesGroup>();
 		
