@@ -56,12 +56,12 @@ public class WroConfigTest {
 	}
 
 	@Test(expected = ConfigurationException.class)
-	public void getInstanceFailsWhenNoInstanceAvailable() {
+	public void instanceIsNotAvailableWhenNoInstanceCreatedFirst() {
 		WroConfig.getInstance();
 	}
 
 	@Test
-	public void getInstanceSucceedsWhenInstanceCreatedAndModelAvailable() {
+	public void instanceIsAvailableWhenInstanceCreatedAndModelAvailable() {
 		when(this.wroTagLibConfig.getModel()).thenReturn(new WroModel());
 
 		WroConfig.createInstance(this.wroTagLibConfig);
@@ -70,7 +70,7 @@ public class WroConfigTest {
 	}
 
 	@Test
-	public void getInstanceHasLoadedTheModel() {
+	public void modelIsAccessibleWhenInstanceCreated() {
 		when(this.wroTagLibConfig.getModel()).thenReturn(this.getModel());
 
 		WroConfig.createInstance(this.wroTagLibConfig);
