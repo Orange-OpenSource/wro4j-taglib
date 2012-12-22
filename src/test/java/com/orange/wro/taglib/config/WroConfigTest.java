@@ -19,8 +19,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import ro.isdc.wro.http.support.ServletContextAttributeHelper;
 import ro.isdc.wro.manager.WroManager;
 import ro.isdc.wro.model.WroModel;
 import ro.isdc.wro.model.group.Group;
@@ -33,6 +35,7 @@ import java.util.Arrays;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
@@ -62,7 +65,9 @@ public class WroConfigTest {
 
 	@Test
 	public void instanceIsAvailableWhenInstanceCreatedAndModelAvailable() {
-		when(this.wroTagLibConfig.getModel()).thenReturn(new WroModel());
+		when(this.wroTagLibConfig.getModel(
+                Matchers.<ServletContextAttributeHelper>anyObject())
+        ).thenReturn(new WroModel());
 
 		WroConfig.createInstance(this.wroTagLibConfig);
 
@@ -71,7 +76,9 @@ public class WroConfigTest {
 
 	@Test
 	public void modelIsAccessibleWhenInstanceCreated() {
-		when(this.wroTagLibConfig.getModel()).thenReturn(this.getModel());
+		when(this.wroTagLibConfig.getModel(
+                Matchers.<ServletContextAttributeHelper>anyObject()
+        )).thenReturn(this.getModel());
 
 		WroConfig.createInstance(this.wroTagLibConfig);
 		FilesGroup testGroup = WroConfig.getInstance().getGroup(TEST_GROUP);
