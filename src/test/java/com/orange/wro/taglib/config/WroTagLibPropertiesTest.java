@@ -22,9 +22,9 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Properties;
 
+import static com.orange.wro.taglib.config.WroConfigTestConstants.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -47,8 +47,13 @@ public class WroTagLibPropertiesTest {
    	public static void setUp() throws IOException {
         new File(PROPERTIES_CUSTOM_LOCATION).mkdirs();
 
-        createProperties(PROPERTIES_DEFAULT_LOCATION, new String[] {"defaultBaseUrl", "defaultLessPath", "defaultResourceDomain"});
-        createProperties(PROPERTIES_CUSTOM_LOCATION, new String[] {"customBaseUrl", "customLessPath", "customResourceDomain"});
+        createProperties(PROPERTIES_DEFAULT_LOCATION, new String[]
+            { DEFAULT_BASE_URL, DEFAULT_LESS_PATH, DEFAULT_RESOURCE_DOMAIN }
+        );
+
+        createProperties(PROPERTIES_CUSTOM_LOCATION, new String[]
+            { CUSTOM_BASE_URL, CUSTOM_LESS_PATH, CUSTOM_RESOURCE_DOMAIN}
+        );
    	}
 
     @AfterClass
@@ -72,9 +77,15 @@ public class WroTagLibPropertiesTest {
         );
 
         assertTrue("Should be available", wroTagLibProperties.isAvailable());
-        assertEquals("Should return custom base url", "customBaseUrl", wroTagLibProperties.getProperty(WroTagLibConfig.InitParam.BASE_URL.getKey()));
-        assertEquals("Should return custom Less path", "customLessPath", wroTagLibProperties.getProperty(WroTagLibConfig.InitParam.LESS_PATH.getKey()));
-        assertEquals("Should return custom resource domain", "customResourceDomain", wroTagLibProperties.getProperty(WroTagLibConfig.InitParam.RESOURCE_DOMAIN.getKey()));
+        assertEquals("Should return custom base url",
+                CUSTOM_BASE_URL, wroTagLibProperties.getProperty(WroTagLibConfig.InitParam.BASE_URL.getKey())
+        );
+        assertEquals("Should return custom Less path",
+            CUSTOM_LESS_PATH, wroTagLibProperties.getProperty(WroTagLibConfig.InitParam.LESS_PATH.getKey())
+        );
+        assertEquals("Should return custom resource domain",
+            CUSTOM_RESOURCE_DOMAIN, wroTagLibProperties.getProperty(WroTagLibConfig.InitParam.RESOURCE_DOMAIN.getKey())
+        );
     }
 
     @Test
@@ -84,20 +95,34 @@ public class WroTagLibPropertiesTest {
         );
 
         assertTrue("Should be available", wroTagLibProperties.isAvailable());
-        assertEquals("Should return default base url", "defaultBaseUrl", wroTagLibProperties.getProperty(WroTagLibConfig.InitParam.BASE_URL.getKey()));
-        assertEquals("Should return default Less path", "defaultLessPath", wroTagLibProperties.getProperty(WroTagLibConfig.InitParam.LESS_PATH.getKey()));
-        assertEquals("Should return default resource domain", "defaultResourceDomain", wroTagLibProperties.getProperty(WroTagLibConfig.InitParam.RESOURCE_DOMAIN.getKey()));
+        assertEquals("Should return default base url",
+            DEFAULT_BASE_URL, wroTagLibProperties.getProperty(WroTagLibConfig.InitParam.BASE_URL.getKey())
+        );
+        assertEquals("Should return default Less path",
+            DEFAULT_LESS_PATH, wroTagLibProperties.getProperty(WroTagLibConfig.InitParam.LESS_PATH.getKey())
+        );
+        assertEquals("Should return default resource domain",
+            DEFAULT_RESOURCE_DOMAIN, wroTagLibProperties.getProperty(WroTagLibConfig.InitParam.RESOURCE_DOMAIN.getKey())
+        );
     }
 
     @Test
     public void loadsPropertiesFromClasspathWhenNoPropertyFilesAvailable() {
-        WroTagLibProperties wroTagLibProperties = new WroTagLibProperties(null, null, "wro4j-taglib-test.properties");
+        WroTagLibProperties wroTagLibProperties = new WroTagLibProperties(
+            null, null, PROPERTIES_TEST_FILENAME
+        );
 
         assertTrue("Should be available", wroTagLibProperties.isAvailable());
 
-        assertEquals("Should return custom base url from classpath", "classpathBaseUrl", wroTagLibProperties.getProperty(WroTagLibConfig.InitParam.BASE_URL.getKey()));
-        assertEquals("Should return custom Less path from classpath", "classpathLessPath", wroTagLibProperties.getProperty(WroTagLibConfig.InitParam.LESS_PATH.getKey()));
-        assertEquals("Should return custom resource domain from classpath", "classpathResourceDomain", wroTagLibProperties.getProperty(WroTagLibConfig.InitParam.RESOURCE_DOMAIN.getKey()));
+        assertEquals("Should return custom base url from classpath",
+            CLASSPATH_BASE_URL, wroTagLibProperties.getProperty(WroTagLibConfig.InitParam.BASE_URL.getKey())
+        );
+        assertEquals("Should return custom Less path from classpath",
+            CLASSPATH_LESS_PATH, wroTagLibProperties.getProperty(WroTagLibConfig.InitParam.LESS_PATH.getKey())
+        );
+        assertEquals("Should return custom resource domain from classpath",
+            CLASSPATH_RESOURCE_DOMAIN, wroTagLibProperties.getProperty(WroTagLibConfig.InitParam.RESOURCE_DOMAIN.getKey())
+        );
     }
 
     private static void createProperties(String location, String[] values) throws IOException {
