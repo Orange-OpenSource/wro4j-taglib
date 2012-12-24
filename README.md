@@ -200,11 +200,13 @@ And how do I use it ?
 ```
 
 2. There are 4 available tags
-    * `script` generates script tags
-    * `style` generates stylesheet link tags
-    * `asJsArray` generates a JavaScript array
-    * `optionalScript` is optional, it should only be used when LESS is used with exploded files. It should be included
-      AFTER the stylesheets and inside the header.
+    * `script`: generates script tags
+    * `style`: generates stylesheet link tags
+    * `asJsArray`: generates a JavaScript array
+    * `optionalScript`: (optional) generates script tags which were
+deemed necessary by wro4j-taglib (an example would the inclusion of
+`less.js` when exploded LESS stylesheets are included). *NOTE: This
+tag should always be the last one of the header*.
 
 ### `script` syntax
 ```JSP
