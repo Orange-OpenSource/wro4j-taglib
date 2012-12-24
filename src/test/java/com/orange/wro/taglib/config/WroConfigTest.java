@@ -35,10 +35,8 @@ import java.util.Arrays;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({WroConfig.class, WroManager.class})
@@ -66,8 +64,8 @@ public class WroConfigTest {
 	@Test
 	public void instanceIsAvailableWhenInstanceCreatedAndModelAvailable() {
 		when(this.wroTagLibConfig.getModel(
-                Matchers.<ServletContextAttributeHelper>anyObject())
-        ).thenReturn(new WroModel());
+				Matchers.<ServletContextAttributeHelper>anyObject())
+		).thenReturn(new WroModel());
 
 		WroConfig.createInstance(this.wroTagLibConfig);
 
@@ -77,8 +75,8 @@ public class WroConfigTest {
 	@Test
 	public void modelIsAccessibleWhenInstanceCreated() {
 		when(this.wroTagLibConfig.getModel(
-                Matchers.<ServletContextAttributeHelper>anyObject()
-        )).thenReturn(this.getModel());
+				Matchers.<ServletContextAttributeHelper>anyObject()
+		)).thenReturn(this.getModel());
 
 		WroConfig.createInstance(this.wroTagLibConfig);
 		FilesGroup testGroup = WroConfig.getInstance().getGroup(TEST_GROUP);
