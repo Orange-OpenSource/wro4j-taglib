@@ -53,31 +53,33 @@ public abstract class IncludeTag extends SimpleTagSupport {
 
 	}
 	
-	/* this one is package so that we could test it */
 	/*package*/ final void writeTag(StringBuilder output) {
-		WroConfig config = WroConfig.getInstance();
-
 		writeBegin(output);
-
-		for (String groupName : groupNames) {
-
-			FilesGroup group = config.getGroup(groupName);
-			if (group == null) {
-				throw new ConfigurationException("group '" + groupName
-						+ "' was not found.");
-			}
-
-			if (exploded) {
-				includeExploded(output, group);
-			} else {
-				include(output, group);
-			}
-
-		}
-		writeEnd(output);
+        writeGroups(output);
+        writeEnd(output);
 	}
 
-	/**
+    private final void writeGroups(StringBuilder output) {
+        WroConfig config = WroConfig.getInstance();
+
+        for (String groupName : groupNames) {
+
+            FilesGroup group = config.getGroup(groupName);
+            if (group == null) {
+                throw new ConfigurationException("group '" + groupName
+                        + "' was not found.");
+            }
+
+            if (exploded) {
+                includeExploded(output, group);
+            } else {
+                include(output, group);
+            }
+
+        }
+    }
+
+    /**
 	 * When this parameter is set to true, then the tag
 	 * expands to the individual files composing the groups.
 	 * 
@@ -155,13 +157,11 @@ public abstract class IncludeTag extends SimpleTagSupport {
 	
 	private void writeLink(StringBuilder builder, String src, String markup) {
 		WroConfig config = WroConfig.getInstance();
-		PageContext context = (PageContext) getJspContext();
 
         String resourceDomain = config.getWroTagLibConfig().getResourceDomain();
         if (resourceDomain == null) resourceDomain = "";
 
-		String contextPath = ((HttpServletRequest) context.getRequest())
-				.getContextPath();
+		String contextPath = this.getContextPath();
 
 		String link = String.format(markup, quote(resourceDomain + contextPath + src));
 
@@ -171,6 +171,11 @@ public abstract class IncludeTag extends SimpleTagSupport {
 			builder.append('\n');
 		}
 	}
+
+    private final String getContextPath() {
+        PageContext context = (PageContext) getJspContext();
+        return ((HttpServletRequest) context.getRequest()).getContextPath();
+    }
 
 	/**
 	 * @return the markup format to generate the markup from the file name.
