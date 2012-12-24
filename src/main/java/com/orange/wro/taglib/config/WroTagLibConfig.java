@@ -27,11 +27,11 @@ import java.util.Set;
  * @author Angelo Tata
  */
 public class WroTagLibConfig {
-	enum InitParam {
+	public enum InitParam {
 		PROPERTIES_DEFAULT_LOCATION("com.orange.wro.properties.default.location"),
 		PROPERTIES_LOCATION("com.orange.wro.properties.location"),
-        PROPERTIES_FILENAME("com.orange.wro.properties.filename"),
-        BASE_URL("com.orange.wro.base.url"),
+		PROPERTIES_FILENAME("com.orange.wro.properties.filename"),
+		BASE_URL("com.orange.wro.base.url"),
 		LESS_PATH("com.orange.wro.less.path"),
 		RESOURCE_DOMAIN("com.orange.wro.resource.domain");
 
@@ -46,23 +46,23 @@ public class WroTagLibConfig {
 		}
 	}
 
-    final ServletContext servletContext;
+	final ServletContext servletContext;
 	final WroTagLibProperties wroTagLibProperties;
 	final Map<String, String> configValues;
 
-    public WroTagLibConfig(ServletContext servletContext) {
-        this.servletContext = servletContext;
+	public WroTagLibConfig(ServletContext servletContext) {
+		this.servletContext = servletContext;
 
-        this.wroTagLibProperties = new WroTagLibProperties(
-            this.servletContext.getInitParameter(InitParam.PROPERTIES_DEFAULT_LOCATION.getKey()),
-            this.servletContext.getInitParameter(InitParam.PROPERTIES_LOCATION.getKey()),
-            this.servletContext.getInitParameter(InitParam.PROPERTIES_FILENAME.getKey())
-        );
+		this.wroTagLibProperties = new WroTagLibProperties(
+			this.servletContext.getInitParameter(InitParam.PROPERTIES_DEFAULT_LOCATION.getKey()),
+			this.servletContext.getInitParameter(InitParam.PROPERTIES_LOCATION.getKey()),
+			this.servletContext.getInitParameter(InitParam.PROPERTIES_FILENAME.getKey())
+		);
 
-        this.configValues =  new HashMap<String, String>(3);
+		this.configValues =  new HashMap<String, String>(3);
 
-	    this.initialize();
-    }
+		this.initialize();
+	}
 
 	private void initialize() {
 		for (InitParam param : InitParam.values()) {
@@ -78,34 +78,34 @@ public class WroTagLibConfig {
 		}
 	}
 
-    public String getBaseUrl() {
-	    return this.configValues.get(InitParam.BASE_URL.getKey());
-    }
+	public String getBaseUrl() {
+		return this.configValues.get(InitParam.BASE_URL.getKey());
+	}
 
-    public String getLessPath() {
-	    return this.configValues.get(InitParam.LESS_PATH.key);
-    }
+	public String getLessPath() {
+		return this.configValues.get(InitParam.LESS_PATH.key);
+	}
 
 	public String getResourceDomain() {
 		return this.configValues.get(InitParam.RESOURCE_DOMAIN.key);
 	}
 
-    public WroModel getModel(ServletContextAttributeHelper servletContextAttributeHelper) {
-        try {
-            return servletContextAttributeHelper.
-                getManagerFactory().create().getModelFactory().create();
-        } catch (Exception ex) {
-            throw new ConfigurationException("Unable to retrieve wro4j model");
-        }
-    }
+	public WroModel getModel(ServletContextAttributeHelper servletContextAttributeHelper) {
+		try {
+			return servletContextAttributeHelper.
+				getManagerFactory().create().getModelFactory().create();
+		} catch (Exception ex) {
+			throw new ConfigurationException("Unable to retrieve wro4j model");
+		}
+	}
 
-    public ServletContextAttributeHelper getServletContextAttributeHelper() {
-        return new ServletContextAttributeHelper(this.servletContext);
-    }
+	public ServletContextAttributeHelper getServletContextAttributeHelper() {
+		return new ServletContextAttributeHelper(this.servletContext);
+	}
 
-    @SuppressWarnings("unchecked")
-    public Set<String> getResourcePaths() {
-        String wroBaseUrl = this.getBaseUrl();
-        return this.servletContext.getResourcePaths(wroBaseUrl);
-    }
+	@SuppressWarnings("unchecked")
+	public Set<String> getResourcePaths() {
+		String wroBaseUrl = this.getBaseUrl();
+		return this.servletContext.getResourcePaths(wroBaseUrl);
+	}
 }
