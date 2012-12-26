@@ -28,30 +28,48 @@ import java.io.IOException;
 public class OptionalScriptTag extends SimpleTagSupport {
 
 	@Override
-	public void doTag() throws JspException, IOException {
+	public void doTag() throws JspException {
+		StringBuilder output = new StringBuilder();
 
-		WroConfig wroConfig = WroConfig.getInstance();
-		PageContext pageContext = (PageContext) getJspContext();
-		StringBuilder builder = new StringBuilder();
-		
-		Object lessObj = pageContext.getAttribute(WroTagLibConstants.LESS_INJECTED);
-		boolean isLessNeeded = lessObj == null ? false : (Boolean)lessObj;
-		
-		if (isLessNeeded) {
-			writeScript(pageContext, builder, wroConfig.getWroTagLibConfig().getLessPath());
-		}
-		
-		pageContext.getOut().append(builder);
-	}
+        try {
+            writeTag(output);
+            getJspContext().getOut().append(output);
+        } catch (Exception e) {
+            throw new JspException(e);
+        }
+    }
+
+    /*package*/ final void writeTag(StringBuilder output) throws IOException {
+        if (isLessNeeded()) {
+            writeScript(output);
+        }
+    }
 	
-	private void writeScript(PageContext context, StringBuilder builder,
-			String path) throws IOException {
-		
-		if (!StringUtils.isEmpty(path)) {
-			HttpServletRequest req = (HttpServletRequest) context.getRequest();
-			String fullPath = req.getContextPath() + path;
+	/*package*/ void writeScript(StringBuilder builder) throws IOException {
+        String lessPath = getLessPath();
+
+		if (!StringUtils.isEmpty(lessPath)) {
+			String fullPath = getContextPath() + lessPath;
 			String out = String.format(WroTagLibConstants.JS_MARKUP, fullPath);
 			builder.append(out);
 		}
 	}
+
+    private String getLessPath() {
+        WroConfig wroConfig = WroConfig.getInstance();
+
+        return wroConfig.getWroTagLibConfig().getLessPath();
+    }
+
+    private String getContextPath() {
+        PageContext context = (PageContext) getJspContext();
+        return ((HttpServletRequest) context.getRequest()).getContextPath();
+    }
+
+    private boolean isLessNeeded() {
+        PageContext pageContext = (PageContext) getJspContext();
+        Object lessObj = pageContext.getAttribute(WroTagLibConstants.LESS_INJECTED);
+
+        return (lessObj == null) ? false : (Boolean)lessObj;
+    }
 }

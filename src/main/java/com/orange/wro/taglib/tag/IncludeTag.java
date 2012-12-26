@@ -41,9 +41,9 @@ public abstract class IncludeTag extends SimpleTagSupport {
 
 	@Override
 	public final void doTag() throws JspException {
-		try {
-			StringBuilder output = new StringBuilder();
+        StringBuilder output = new StringBuilder();
 
+		try {
 			writeTag(output);
 
 			getJspContext().getOut().append(output);
@@ -59,7 +59,7 @@ public abstract class IncludeTag extends SimpleTagSupport {
         writeEnd(output);
 	}
 
-    private final void writeGroups(StringBuilder output) {
+    private void writeGroups(StringBuilder output) {
         WroConfig config = WroConfig.getInstance();
 
         for (String groupName : groupNames) {
@@ -172,7 +172,7 @@ public abstract class IncludeTag extends SimpleTagSupport {
 		}
 	}
 
-    private final String getContextPath() {
+    private String getContextPath() {
         PageContext context = (PageContext) getJspContext();
         return ((HttpServletRequest) context.getRequest()).getContextPath();
     }
