@@ -29,5 +29,6 @@ public interface WroTagTestConstants {
 	String GROUP_FIRST_FILENAME_LESS = "testGroupName1.less";
 	String TEST_CDN_DOMAIN = "//test.cdn.domain";
 	String CONTEXT_PATH = "/wroTest/";
-	List<String> GROUP_FIRST_FILES = Arrays.asList(new String[]{"testFile1FromGroup1.js", "testFile2FromGroup1.js"});
+	List<String> GROUP_FIRST_FILES_JS = Arrays.asList(new String[]{"testFile1FromGroup1.js", "testFile2FromGroup1.js"});
+	List<String> GROUP_FIRST_FILES_CSS = Arrays.asList(new String[]{"testFile1FromGroup1.css", "testFile2FromGroup1.css"});
 }

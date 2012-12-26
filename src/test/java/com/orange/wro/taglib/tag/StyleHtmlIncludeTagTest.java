@@ -41,8 +41,8 @@ import static org.powermock.api.mockito.PowerMockito.when;
 public class StyleHtmlIncludeTagTest {
 	private static final String STYLE_SINGLE_TAG_OUTPUT = "<link rel='stylesheet' href='//test.cdn.domain/wroTest/testGroupName1.css' />";
 	private static final String STYLE_SINGLE_TAG_OUTPUT_FOR_LESS = "<link rel='stylesheet/less' type='text/css' href='//test.cdn.domain/wroTest/testGroupName1.less' />";
-	private static final String STYLE_MULTIPLE_TAG_OUTPUT = "<link rel='stylesheet' href='//test.cdn.domain/wroTest/testFile1FromGroup1.js' />" +
-			"<link rel='stylesheet' href='//test.cdn.domain/wroTest/testFile2FromGroup1.js' />";
+	private static final String STYLE_MULTIPLE_TAG_OUTPUT = "<link rel='stylesheet' href='//test.cdn.domain/wroTest/testFile1FromGroup1.css' />" +
+			"<link rel='stylesheet' href='//test.cdn.domain/wroTest/testFile2FromGroup1.css' />";
 
 	private WroConfig wroConfig;
 	private WroTagLibConfig wroTagLibConfig;
@@ -74,7 +74,7 @@ public class StyleHtmlIncludeTagTest {
 	}
 
 	@Test
-	public void shouldBuildASingleStyleTagForLESS() throws Exception {
+	public void shouldBuildASingleStyleTagForLess() throws Exception {
 		when(group.getMinimizedFile(ResourceType.CSS)).thenReturn(GROUP_FIRST_FILENAME_LESS);
 
 		StringBuilder output = new StringBuilder();
@@ -88,7 +88,7 @@ public class StyleHtmlIncludeTagTest {
 
 	@Test
 	public void shouldBuildMultipleStyleTags() throws Exception {
-		when(group.get(ResourceType.CSS)).thenReturn(GROUP_FIRST_FILES);
+		when(group.get(ResourceType.CSS)).thenReturn(GROUP_FIRST_FILES_CSS);
 
 		StringBuilder output = new StringBuilder();
 		this.buildTag(output, true);

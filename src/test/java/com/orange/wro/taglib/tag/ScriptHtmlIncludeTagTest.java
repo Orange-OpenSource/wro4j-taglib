@@ -74,7 +74,7 @@ public class ScriptHtmlIncludeTagTest {
 
 	@Test
 	public void shouldBuildMultipleScriptTags() throws Exception {
-		when(group.get(ResourceType.JS)).thenReturn(GROUP_FIRST_FILES);
+		when(group.get(ResourceType.JS)).thenReturn(GROUP_FIRST_FILES_JS);
 
 		StringBuilder output = new StringBuilder();
 		this.buildTag(output, true);
