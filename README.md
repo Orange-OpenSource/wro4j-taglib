@@ -136,17 +136,44 @@ Be careful as wro4j is only compatible with maven 3 (as of wro4j 1.5). If you ne
 use maven 2, use wro4j 1.4.9.
 
 ### web.xml configuration
+#### Listeners
 You need to add two listeners: normal wro4j's `WroServletContextListener`
 and this module's `WroServletContextListener`.
 
-Then you need to configure a context parameter whose name is
-`com.orange.wro.base.url` and whose value is the URI where the combined
+#### Tag library configuration
+The tag library may be configured through context parameters _or_ using a property file. 
+The names of the available parameters are the same:
+
+* `com.orange.wro.base.url` (_required_)
+* `com.orange.wro.resource.domain` (optional)
+* `com.orange.wro.less.path` (optional)
+
+The first one (`com.orange.wro.base.url`) must be the URI where the combined
 files are.
 
-And last, you must configure a Filter to configure wro4j's Context.
+The resource domain parameter (`com.orange.wro.resource.domain`) might be useful if you have a CDN, or if you serve your static resources from a [static domain](https://developers.google.com/speed/docs/best-practices/request#ServeFromCookielessDomain).
+
+Finally, if you are using [LESS](http://lesscss.org/) resources directly, wro4j-taglib is able to include the LESS compiler in the page; you need to provide its path (`com.orange.wro.less.path`).
+
+#### Property file
+As an alternative, you may define base Url, resource domain and LESS path in a property file instead. For maximum flexibility in choosing the name and position of the property file, you can add these context parameters to `web.xml`:
+
+* `com.orange.wro.properties.default.location`
+* `com.orange.wro.properties.location`
+* `com.orange.wro.properties.filename`
+
+All of them are optional, and may be combined to suit your needs. If none is specified, the tag library will try to load a file called `wro4j-taglib.properties` from the default path (`/etc`).
+
+If no such file is there, it will try to load it from the Web Application classpath.
+
+In the end, it will resort to read the context parameters as specified in `web.xml`.
+
+
+#### Filters
+Lastly, you must add a Filter to configure wro4j's Context.
 This Filter must be mapped to `/*`.
 
-```XML
+```XML 
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
@@ -174,6 +201,12 @@ This Filter must be mapped to `/*`.
 		<param-value>/wro</param-value>
 	</context-param>
 
+	<!-- optional: only needed if you intend to use a static domain or a CDN -->
+	<context-param>
+		<param-name>com.orange.wro.resource.domain</param-name>
+		<param-value>//static.company.domain</param-value>
+	</context-param>
+
 	<!-- optional: only needed if you intend to use LESS with exploded files -->
 	<context-param>
 		<param-name>com.orange.wro.less.path</param-name>
@@ -191,6 +224,7 @@ This Filter must be mapped to `/*`.
 	</filter-mapping>
 </web-app>
 ```
+
 
 And how do I use it ?
 ---------------------
