@@ -16,16 +16,15 @@
 
 package com.orange.wro.taglib.config;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 
 /**
  * Application Lifecycle Listener implementation class WroContextListener
- * 
  */
 public class WroContextListener implements ServletContextListener {
-
 	/**
 	 * Default constructor.
 	 */
@@ -36,15 +35,18 @@ public class WroContextListener implements ServletContextListener {
 	 * @see ServletContextListener#contextInitialized(ServletContextEvent)
 	 */
 	@Override
-	public void contextInitialized(ServletContextEvent sce) {
-		WroConfig.createInstance(sce.getServletContext());
+	public void contextInitialized(ServletContextEvent servletContextEvent) {
+		ServletContext servletContext = servletContextEvent.getServletContext();
+		WroTagLibConfig wroTagLibConfig = new WroTagLibConfig(servletContext);
+
+		WroConfig.createInstance(wroTagLibConfig);
 	}
+
 
 	/**
 	 * @see ServletContextListener#contextDestroyed(ServletContextEvent)
 	 */
 	@Override
-	public void contextDestroyed(ServletContextEvent sce) {
+	public void contextDestroyed(ServletContextEvent servletContextEvent) {
 	}
-
 }

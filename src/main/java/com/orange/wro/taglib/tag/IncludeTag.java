@@ -16,19 +16,17 @@
 
 package com.orange.wro.taglib.tag;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.orange.wro.taglib.config.ConfigurationException;
+import com.orange.wro.taglib.config.FilesGroup;
+import com.orange.wro.taglib.config.WroConfig;
+import ro.isdc.wro.model.resource.ResourceType;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
-
-import com.orange.wro.taglib.config.ConfigurationException;
-import com.orange.wro.taglib.config.FilesGroup;
-import com.orange.wro.taglib.config.WroConfig;
-
-import ro.isdc.wro.model.resource.ResourceType;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is the base class for all IncludeTags, which contains
@@ -43,9 +41,9 @@ public abstract class IncludeTag extends SimpleTagSupport {
 
 	@Override
 	public final void doTag() throws JspException {
-		try {
-			StringBuilder output = new StringBuilder();
+        StringBuilder output = new StringBuilder();
 
+		try {
 			writeTag(output);
 
 			getJspContext().getOut().append(output);
@@ -55,31 +53,33 @@ public abstract class IncludeTag extends SimpleTagSupport {
 
 	}
 	
-	/* this one is package so that we could test it */
 	/*package*/ final void writeTag(StringBuilder output) {
-		WroConfig config = WroConfig.getInstance();
-
 		writeBegin(output);
-
-		for (String groupName : groupNames) {
-
-			FilesGroup group = config.getGroup(groupName);
-			if (group == null) {
-				throw new ConfigurationException("group '" + groupName
-						+ "' was not found.");
-			}
-
-			if (exploded) {
-				includeExploded(output, group);
-			} else {
-				include(output, group);
-			}
-
-		}
-		writeEnd(output);
+        writeGroups(output);
+        writeEnd(output);
 	}
 
-	/**
+    private void writeGroups(StringBuilder output) {
+        WroConfig config = WroConfig.getInstance();
+
+        for (String groupName : groupNames) {
+
+            FilesGroup group = config.getGroup(groupName);
+            if (group == null) {
+                throw new ConfigurationException("group '" + groupName
+                        + "' was not found.");
+            }
+
+            if (exploded) {
+                includeExploded(output, group);
+            } else {
+                include(output, group);
+            }
+
+        }
+    }
+
+    /**
 	 * When this parameter is set to true, then the tag
 	 * expands to the individual files composing the groups.
 	 * 
@@ -99,7 +99,7 @@ public abstract class IncludeTag extends SimpleTagSupport {
 	 * This can makes the output prettier, but this
 	 * really depends on your taste.
 	 * 
-	 * @param exploded a boolean indicating whether we
+	 * @param pretty a boolean indicating whether we
 	 * want a pretty output. 
 	 */
 	// TODO: makes this a servlet context param ?
@@ -156,16 +156,26 @@ public abstract class IncludeTag extends SimpleTagSupport {
 	}
 	
 	private void writeLink(StringBuilder builder, String src, String markup) {
-		PageContext context = (PageContext) getJspContext();
-		HttpServletRequest req = (HttpServletRequest) context.getRequest();
-		String path = req.getContextPath() + src;
-		String link = String.format(markup, quote(path));
+		WroConfig config = WroConfig.getInstance();
+
+        String resourceDomain = config.getWroTagLibConfig().getResourceDomain();
+        if (resourceDomain == null) resourceDomain = "";
+
+		String contextPath = this.getContextPath();
+
+		String link = String.format(markup, quote(resourceDomain + contextPath + src));
+
 		builder.append(link);
 
 		if (pretty) {
 			builder.append('\n');
 		}
 	}
+
+    private String getContextPath() {
+        PageContext context = (PageContext) getJspContext();
+        return ((HttpServletRequest) context.getRequest()).getContextPath();
+    }
 
 	/**
 	 * @return the markup format to generate the markup from the file name.

@@ -18,21 +18,13 @@
 
 package com.orange.wro.taglib.config;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.ServletContext;
-
 import org.apache.commons.io.FilenameUtils;
-
-import ro.isdc.wro.http.support.ServletContextAttributeHelper;
 import ro.isdc.wro.model.WroModel;
 import ro.isdc.wro.model.group.Group;
 import ro.isdc.wro.model.resource.Resource;
 import ro.isdc.wro.model.resource.ResourceType;
+
+import java.util.*;
 
 /**
  * This singleton keeps the minimized and unminimized files for
@@ -41,15 +33,11 @@ import ro.isdc.wro.model.resource.ResourceType;
  * @author Julien Wajsberg
  */
 public class WroConfig {
-	private static final String WRO_BASE_URL_ATTRIBUTE = "com.orange.wro.base.url";
-	private static final String LESS_SCRIPT_ATTRIBUTE = "com.orange.wro.less.path";
-
-	private static WroConfig instance;
+	/* package */ static WroConfig instance;
 
 	private Map<String, FilesGroup> groups;
-	private ServletContext servletContext;
+	private WroTagLibConfig wroTagLibConfig;
 	private boolean initialized = false;
-	private String lessPath;
 
 	public static WroConfig getInstance() throws ConfigurationException {
 		if (instance == null) {
@@ -67,15 +55,13 @@ public class WroConfig {
 	}
 
 	private void loadConfig() throws ConfigurationException {
-		/* we should somehow inject this model so that we could
-		 * test this class more easily.
-		 */
-		ServletContextAttributeHelper helper = new ServletContextAttributeHelper(servletContext);
-		WroModel model = helper.getManagerFactory().create().getModelFactory().create();
+		WroModel model = this.wroTagLibConfig.getModel(
+            this.wroTagLibConfig.getServletContextAttributeHelper()
+        );
 		
 		groups = new HashMap<String, FilesGroup>();
 		
-		for(Group group: model.getGroups()) {
+		for (Group group: model.getGroups()) {
 			String groupName = group.getName();
 			List<String> jsFiles = getFilesFor(group, ResourceType.JS);
 			List<String> cssFiles = getFilesFor(group, ResourceType.CSS);
@@ -103,11 +89,8 @@ public class WroConfig {
 	 * However, it's difficult to make it work with WTP and m2e-wro4j eclipse plugin.
 	 */
 	private void loadMinimizedFiles() {
-		
-		String wroBaseUrl = servletContext.getInitParameter(WRO_BASE_URL_ATTRIBUTE);
-		@SuppressWarnings("unchecked")
-		Set<String> resourcePaths = servletContext
-				.getResourcePaths(wroBaseUrl);
+		Set<String> resourcePaths = this.wroTagLibConfig.getResourcePaths();
+
 		if (resourcePaths == null) {
 			return;
 		}
@@ -123,18 +106,11 @@ public class WroConfig {
 		}
 	}
 
-	/* package */static synchronized void createInstance(ServletContext context) {
+	/* package */static synchronized void createInstance(WroTagLibConfig wroTagLibConfig) {
 		if (instance == null) {
 			instance = new WroConfig();
-			instance.servletContext = context;
+			instance.wroTagLibConfig = wroTagLibConfig;
 		}
-	}
-
-	public String getLessPath() {
-		if (lessPath == null) {
-			lessPath = servletContext.getInitParameter(LESS_SCRIPT_ATTRIBUTE);
-		}
-		return lessPath;
 	}
 
 	public FilesGroup getGroup(String groupName) {
@@ -145,4 +121,8 @@ public class WroConfig {
 					"WroConfig was not correctly initialized");
 		}
 	}
+
+    public WroTagLibConfig getWroTagLibConfig() {
+        return this.wroTagLibConfig;
+    }
 }
