@@ -17,7 +17,6 @@
 package com.orange.wro.taglib.tag;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-
 import ro.isdc.wro.model.resource.ResourceType;
 
 public class AsJsArrayIncludeTag extends IncludeTag {
