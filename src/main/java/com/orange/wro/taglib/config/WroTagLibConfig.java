@@ -20,6 +20,7 @@ import ro.isdc.wro.model.WroModel;
 
 import javax.servlet.ServletContext;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,7 +32,10 @@ public class WroTagLibConfig {
 		PROPERTIES_DEFAULT_LOCATION("com.orange.wro.properties.default.location"),
 		PROPERTIES_LOCATION("com.orange.wro.properties.location"),
 		PROPERTIES_FILENAME("com.orange.wro.properties.filename"),
+
 		BASE_URL("com.orange.wro.base.url"),
+		BASE_URL_JS("com.orange.wro.base.url.js"),
+		BASE_URL_CSS("com.orange.wro.base.url.css"),
 		LESS_PATH("com.orange.wro.less.path"),
 		RESOURCE_DOMAIN("com.orange.wro.resource.domain");
 
@@ -59,7 +63,7 @@ public class WroTagLibConfig {
 			this.servletContext.getInitParameter(InitParam.PROPERTIES_FILENAME.getKey())
 		);
 
-		this.configValues =  new HashMap<String, String>(3);
+		this.configValues =  new HashMap<String, String>(InitParam.values().length - 3);
 
 		this.initialize();
 	}
@@ -78,9 +82,17 @@ public class WroTagLibConfig {
 		}
 	}
 
-	public String getBaseUrl() {
-		return this.configValues.get(InitParam.BASE_URL.getKey());
-	}
+    public String getBaseUrl() {
+   		return this.configValues.get(InitParam.BASE_URL.getKey());
+   	}
+
+    public String getBaseUrlJs() {
+   		return this.configValues.get(InitParam.BASE_URL_JS.getKey());
+   	}
+
+    public String getBaseUrlCss() {
+   		return this.configValues.get(InitParam.BASE_URL_CSS.getKey());
+   	}
 
 	public String getLessPath() {
 		return this.configValues.get(InitParam.LESS_PATH.key);
@@ -106,6 +118,26 @@ public class WroTagLibConfig {
 	@SuppressWarnings("unchecked")
 	public Set<String> getResourcePaths() {
 		String wroBaseUrl = this.getBaseUrl();
-		return this.servletContext.getResourcePaths(wroBaseUrl);
+
+        if (wroBaseUrl == null) {
+            String wroBaseUrlJs = this.getBaseUrlJs();
+            String wroBaseUrlCss = this.getBaseUrlCss();
+
+            if ((wroBaseUrlJs == null) || (wroBaseUrlCss == null)) {
+                throw new ConfigurationException("com.orange.wro.base.url was not configured. In this case, " +
+                        "both com.orange.wro.base.url.js and com.orange.wro.base.url.css must be configured.");
+            } else {
+                Set wroBaseUrlJsPaths = this.servletContext.getResourcePaths(wroBaseUrlJs);
+                Set wroBaseUrlCssPaths = this.servletContext.getResourcePaths(wroBaseUrlCss);
+                Set<String> resourcePaths = new HashSet<String>();
+
+                resourcePaths.addAll(wroBaseUrlJsPaths);
+                resourcePaths.addAll(wroBaseUrlCssPaths);
+
+                return resourcePaths;
+            }
+        } else {
+            return this.servletContext.getResourcePaths(wroBaseUrl);
+        }
 	}
 }

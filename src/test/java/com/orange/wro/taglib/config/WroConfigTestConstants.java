@@ -12,10 +12,14 @@ public interface WroConfigTestConstants {
     String DEFAULT_RESOURCE_DOMAIN = "defaultResourceDomain";
 
     String CUSTOM_BASE_URL = "customBaseUrl";
+    String CUSTOM_BASE_URL_JS = "customBaseUrlJs";
+    String CUSTOM_BASE_URL_CSS = "customBaseUrlCss";
     String CUSTOM_LESS_PATH = "customLessPath";
     String CUSTOM_RESOURCE_DOMAIN = "customResourceDomain";
 
     String CLASSPATH_BASE_URL = "classpathBaseUrl";
+    String CLASSPATH_BASE_URL_JS = "classpathBaseUrlJs";
+    String CLASSPATH_BASE_URL_CSS = "classpathBaseUrlCss";
     String CLASSPATH_LESS_PATH = "classpathLessPath";
     String CLASSPATH_RESOURCE_DOMAIN = "classpathResourceDomain";
 }
