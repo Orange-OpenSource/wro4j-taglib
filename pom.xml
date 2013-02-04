@@ -3,7 +3,7 @@
 	<groupId>com.orange.wro4j</groupId>
 	<artifactId>wro4j-taglib</artifactId>
 	<packaging>jar</packaging>
-	<version>1.4-SNAPSHOT</version>
+	<version>1.4</version>
 	<name>taglib for wro4j</name>
 	<description>This is a taglib for wro4j</description>
 	<url>https://github.com/Orange-OpenSource/wro4j-taglib</url>
@@ -170,7 +170,7 @@
         <connection>scm:git:https://github.com/Orange-OpenSource/wro4j-taglib.git</connection>
 		<developerConnection>scm:git:https://github.com/Orange-OpenSource/wro4j-taglib.git</developerConnection>
 		<url>https://github.com/Orange-OpenSource/wro4j-taglib</url>
-        <tag>HEAD</tag>
+        <tag>wro4j-taglib-1.4</tag>
     </scm>
 
 	<licenses>
