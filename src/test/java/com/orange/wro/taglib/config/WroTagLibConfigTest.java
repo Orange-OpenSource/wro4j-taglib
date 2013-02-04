@@ -31,12 +31,7 @@ import javax.servlet.ServletContext;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.orange.wro.taglib.config.WroConfigTestConstants.CLASSPATH_BASE_URL;
-import static com.orange.wro.taglib.config.WroConfigTestConstants.CLASSPATH_LESS_PATH;
-import static com.orange.wro.taglib.config.WroConfigTestConstants.CLASSPATH_RESOURCE_DOMAIN;
-import static com.orange.wro.taglib.config.WroConfigTestConstants.CUSTOM_BASE_URL;
-import static com.orange.wro.taglib.config.WroConfigTestConstants.CUSTOM_LESS_PATH;
-import static com.orange.wro.taglib.config.WroConfigTestConstants.CUSTOM_RESOURCE_DOMAIN;
+import static com.orange.wro.taglib.config.WroConfigTestConstants.*;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -53,8 +48,14 @@ public class WroTagLibConfigTest {
 	public void setUp() {
 		this.servletContext = mock(ServletContext.class);
 
-		when(this.servletContext.getInitParameter(WroTagLibConfig.InitParam.BASE_URL.getKey())).
-			thenReturn(CUSTOM_BASE_URL);
+        when(this.servletContext.getInitParameter(WroTagLibConfig.InitParam.BASE_URL.getKey())).
+      			thenReturn(CUSTOM_BASE_URL);
+
+        when(this.servletContext.getInitParameter(WroTagLibConfig.InitParam.BASE_URL_JS.getKey())).
+      			thenReturn(CUSTOM_BASE_URL_JS);
+
+        when(this.servletContext.getInitParameter(WroTagLibConfig.InitParam.BASE_URL_CSS.getKey())).
+      			thenReturn(CUSTOM_BASE_URL_CSS);
 
 		when(this.servletContext.getInitParameter(WroTagLibConfig.InitParam.LESS_PATH.getKey())).
 			thenReturn(CUSTOM_LESS_PATH);
@@ -68,6 +69,8 @@ public class WroTagLibConfigTest {
 		WroTagLibConfig wroTagLibConfig = new WroTagLibConfig(this.servletContext);
 
 		assertEquals("Should be custom base url", CUSTOM_BASE_URL, wroTagLibConfig.getBaseUrl());
+		assertEquals("Should be custom base url for JS", CUSTOM_BASE_URL_JS, wroTagLibConfig.getBaseUrlJs());
+		assertEquals("Should be custom base url for CSS", CUSTOM_BASE_URL_CSS, wroTagLibConfig.getBaseUrlCss());
 		assertEquals("Should be custom Less path", CUSTOM_LESS_PATH, wroTagLibConfig.getLessPath());
 		assertEquals("Should be custom resource domain", CUSTOM_RESOURCE_DOMAIN, wroTagLibConfig.getResourceDomain());
 	}
@@ -80,6 +83,8 @@ public class WroTagLibConfigTest {
 		WroTagLibConfig wroTagLibConfig = new WroTagLibConfig(this.servletContext);
 
 		assertEquals("Should be classpath base url", CLASSPATH_BASE_URL, wroTagLibConfig.getBaseUrl());
+		assertEquals("Should be classpath base url for JS", CLASSPATH_BASE_URL_JS, wroTagLibConfig.getBaseUrlJs());
+		assertEquals("Should be classpath base url for CSS", CLASSPATH_BASE_URL_CSS, wroTagLibConfig.getBaseUrlCss());
 		assertEquals("Should be classpath Less path", CLASSPATH_LESS_PATH, wroTagLibConfig.getLessPath());
 		assertEquals("Should be classpath resource domain", CLASSPATH_RESOURCE_DOMAIN, wroTagLibConfig.getResourceDomain());
 	}
@@ -104,17 +109,79 @@ public class WroTagLibConfigTest {
 		assertEquals("Should return the available model", modelFromTest, modelFromConfig);
 	}
 
-	@Test
-	public void resourcePathsAreRetrievedFromTheBaseUrl() {
-		WroTagLibConfig wroTagLibConfig = new WroTagLibConfig(this.servletContext);
+    @Test
+   	public void resourcePathsAreRetrievedFromTheBaseUrl() {
+   		WroTagLibConfig wroTagLibConfig = new WroTagLibConfig(this.servletContext);
 
-		Set<String> testResourcePaths = new HashSet<String>();
-		testResourcePaths.add("testResourcePath1");
+   		Set<String> testResourcePaths = new HashSet<String>();
+   		testResourcePaths.add("testResourcePath1");
 
-		when(this.servletContext.getResourcePaths(CUSTOM_BASE_URL)).thenReturn(testResourcePaths);
+   		when(this.servletContext.getResourcePaths(CUSTOM_BASE_URL)).thenReturn(testResourcePaths);
 
-		assertEquals("Resource paths should be based on the base URL",
-			testResourcePaths, wroTagLibConfig.getResourcePaths()
-		);
-	}
+   		assertEquals("Resource paths should be based on the base URL",
+   			testResourcePaths, wroTagLibConfig.getResourcePaths()
+   		);
+   	}
+
+    @Test(expected = ConfigurationException.class)
+    public void whenNoBaseUrlIsAvailableExecutionStops() {
+        when(this.servletContext.getInitParameter(WroTagLibConfig.InitParam.BASE_URL.getKey())).
+      			thenReturn(null);
+        when(this.servletContext.getInitParameter(WroTagLibConfig.InitParam.BASE_URL_JS.getKey())).
+      			thenReturn(null);
+        when(this.servletContext.getInitParameter(WroTagLibConfig.InitParam.BASE_URL_CSS.getKey())).
+      			thenReturn(null);
+
+        WroTagLibConfig wroTagLibConfig = new WroTagLibConfig(this.servletContext);
+        wroTagLibConfig.getResourcePaths();
+    }
+
+    @Test(expected = ConfigurationException.class)
+    public void whenOnlyJSBaseUrlIsAvailableExecutionStops() {
+        when(this.servletContext.getInitParameter(WroTagLibConfig.InitParam.BASE_URL.getKey())).
+      			thenReturn(null);
+        when(this.servletContext.getInitParameter(WroTagLibConfig.InitParam.BASE_URL_JS.getKey())).
+      			thenReturn(null);
+
+        WroTagLibConfig wroTagLibConfig = new WroTagLibConfig(this.servletContext);
+        wroTagLibConfig.getResourcePaths();
+    }
+
+    @Test(expected = ConfigurationException.class)
+    public void whenOnlyCSSBaseUrlIsAvailableExecutionStops() {
+        when(this.servletContext.getInitParameter(WroTagLibConfig.InitParam.BASE_URL.getKey())).
+      			thenReturn(null);
+        when(this.servletContext.getInitParameter(WroTagLibConfig.InitParam.BASE_URL_CSS.getKey())).
+      			thenReturn(null);
+
+        WroTagLibConfig wroTagLibConfig = new WroTagLibConfig(this.servletContext);
+        wroTagLibConfig.getResourcePaths();
+    }
+
+
+    @Test
+   	public void resourcePathsAreRetrievedFromTheJSAndCSSUrlsWhenBaseUrlIsNotAvailable() {
+           when(this.servletContext.getInitParameter(WroTagLibConfig.InitParam.BASE_URL.getKey())).
+         			thenReturn(null);
+
+   		WroTagLibConfig wroTagLibConfig = new WroTagLibConfig(this.servletContext);
+
+        Set<String> testResourcePathsJs = new HashSet<String>();
+      		testResourcePathsJs.add("testResourcePathJS1");
+
+        Set<String> testResourcePathsCss = new HashSet<String>();
+      		testResourcePathsCss.add("testResourcePathCSS1");
+
+        Set<String> testResourcePaths = new HashSet<String>();
+        testResourcePaths.addAll(testResourcePathsJs);
+        testResourcePaths.addAll(testResourcePathsCss);
+
+
+   		when(this.servletContext.getResourcePaths(CUSTOM_BASE_URL_JS)).thenReturn(testResourcePathsJs);
+   		when(this.servletContext.getResourcePaths(CUSTOM_BASE_URL_CSS)).thenReturn(testResourcePathsCss);
+
+   		assertEquals("Resource paths should be based on the base URL",
+   			testResourcePaths, wroTagLibConfig.getResourcePaths()
+   		);
+   	}
 }
