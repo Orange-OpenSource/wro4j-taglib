@@ -15,7 +15,7 @@
 */
 package com.orange.wro.taglib.tag;
 
-import com.orange.wro.taglib.config.WroConfig;
+import org.hamcrest.core.StringContains;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +24,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import static com.orange.wro.taglib.tag.WroTagTestConstants.CONTEXT_PATH;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.spy;
 
@@ -77,8 +78,26 @@ public class OptionalScriptTagTest {
         StringBuilder output = new StringBuilder();
         tag.writeTag(output);
 
-        assertEquals("Should use the right context and file path",
-            SCRIPT_TAG_OUTPUT,
+        assertThat("Should use the right context and file path",
+            output.toString(),
+            new StringContains(SCRIPT_TAG_OUTPUT)
+        );
+    }
+
+    @Test
+    public void souldBuildDebugModeScriptForLess() throws Exception {
+        doReturn(true).when(tag, "isLessNeeded");
+        doReturn("lessPath").when(tag, "getLessPath");
+
+        StringBuilder output = new StringBuilder();
+        tag.writeTag(output);
+
+        String expectedOutput = String.format(
+            WroTagLibConstants.LESS_DEBUG_MARKUP,
+            SCRIPT_TAG_OUTPUT);
+
+	    assertEquals("Should be setting development mode for LESS",
+            expectedOutput,
             output.toString()
         );
     }

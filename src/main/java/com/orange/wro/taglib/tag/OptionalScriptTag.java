@@ -50,7 +50,8 @@ public class OptionalScriptTag extends SimpleTagSupport {
 
 		if (!StringUtils.isEmpty(lessPath)) {
 			String fullPath = getContextPath() + lessPath;
-			String out = String.format(WroTagLibConstants.JS_MARKUP, fullPath);
+			String script = String.format(WroTagLibConstants.JS_MARKUP, fullPath);
+			String out = String.format(WroTagLibConstants.LESS_DEBUG_MARKUP, script);
 			builder.append(out);
 		}
 	}
