@@ -99,6 +99,42 @@ public class IGroupLoaderTest {
 
 		verify(loader, times(1)).getMinimizedResources();
 	}
+
+	@Test
+	public void explodedCSSFilesAreLoadedOnlyOnce() {
+
+		IGroupLoader loader = getLoader();
+		
+		FilesGroup filesGroup = new FilesGroup(TEST_GROUP, loader);
+		filesGroup.get(ResourceType.CSS);
+		filesGroup.get(ResourceType.CSS);
+
+		verify(loader, times(1)).getResources(ResourceType.CSS);
+	}
+
+	@Test
+	public void explodedJSFilesAreLoadedOnlyOnce() {
+
+		IGroupLoader loader = getLoader();
+		
+		FilesGroup filesGroup = new FilesGroup(TEST_GROUP, loader);
+		filesGroup.get(ResourceType.JS);
+		filesGroup.get(ResourceType.JS);
+
+		verify(loader, times(1)).getResources(ResourceType.JS);
+	}
+
+	@Test
+	public void minimizedFilesAreLoadedOnlyOnce() {
+
+		IGroupLoader loader = getLoader();
+		
+		FilesGroup filesGroup = new FilesGroup(TEST_GROUP, loader);
+		filesGroup.getMinimizedFile(ResourceType.CSS);
+		filesGroup.getMinimizedFile(ResourceType.JS);
+
+		verify(loader, times(1)).getMinimizedResources();
+	}
 	
 	private IGroupLoader getLoader() {
 
