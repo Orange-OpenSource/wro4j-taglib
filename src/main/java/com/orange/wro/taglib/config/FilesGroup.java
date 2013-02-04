@@ -29,26 +29,30 @@ import ro.isdc.wro.model.resource.ResourceType;
  */
 public class FilesGroup {
 	private String name;
+	private IGroupLoader groupLoader;
 	private Map<ResourceType,List<String>> group = new HashMap<ResourceType, List<String>>();
-	private Map<ResourceType,String> minimizedFiles = new HashMap<ResourceType, String>();
+	private Map<ResourceType,String> minimizedFiles;
 	
-	public FilesGroup(String name) {
+	public FilesGroup(String name, IGroupLoader groupLoader) {
 		this.name = name;
-	}
-	
-	public void put(ResourceType type, List<String> files) {
-		group.put(type, files);
+		this.groupLoader = groupLoader;
 	}
 	
 	public List<String> get(ResourceType type) {
+		
+		if (!group.containsKey(type)) {
+			group.put(type, groupLoader.getResources(type));
+		}
+		
 		return group.get(type);
 	}
 	
-	public void putMinimizedFile(ResourceType type, String minimizedFile) {
-		minimizedFiles.put(type, minimizedFile);
-	}
-	
 	public String getMinimizedFile(ResourceType type) {
+
+		if (minimizedFiles == null) {
+			minimizedFiles = groupLoader.getMinimizedResources();
+		}
+		
 		return minimizedFiles.get(type);
 	}
 	

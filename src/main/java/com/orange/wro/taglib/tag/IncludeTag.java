@@ -122,7 +122,7 @@ public abstract class IncludeTag extends SimpleTagSupport {
 	private void includeExploded(StringBuilder builder, FilesGroup group)
 			throws ConfigurationException {
 		List<String> files = group.get(getGroupType());
-		if (files == null) {
+		if (files == null || files.isEmpty()) {
 			throw new ConfigurationException(
 					"exploded file list for group type '" + getGroupType()
 							+ "' for group '" + group.getName()

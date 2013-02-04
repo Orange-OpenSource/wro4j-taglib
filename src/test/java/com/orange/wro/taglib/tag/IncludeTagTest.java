@@ -15,18 +15,12 @@
 */
 package com.orange.wro.taglib.tag;
 
-import com.orange.wro.taglib.config.ConfigurationException;
-import com.orange.wro.taglib.config.FilesGroup;
-import com.orange.wro.taglib.config.WroConfig;
-import com.orange.wro.taglib.config.WroTagLibConfig;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-import ro.isdc.wro.model.resource.ResourceType;
-
-import static com.orange.wro.taglib.tag.WroTagTestConstants.*;
+import static com.orange.wro.taglib.tag.WroTagTestConstants.CONTEXT_PATH;
+import static com.orange.wro.taglib.tag.WroTagTestConstants.GROUP_FIRST_FILENAME_JS;
+import static com.orange.wro.taglib.tag.WroTagTestConstants.GROUP_FIRST_FILES_JS;
+import static com.orange.wro.taglib.tag.WroTagTestConstants.GROUP_NAMES;
+import static com.orange.wro.taglib.tag.WroTagTestConstants.GROUP_NAME_FIRST;
+import static com.orange.wro.taglib.tag.WroTagTestConstants.TEST_CDN_DOMAIN;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.verify;
@@ -35,6 +29,23 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.mockito.PowerMockito.when;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import ro.isdc.wro.model.resource.ResourceType;
+
+import com.orange.wro.taglib.config.ConfigurationException;
+import com.orange.wro.taglib.config.FilesGroup;
+import com.orange.wro.taglib.config.IGroupLoader;
+import com.orange.wro.taglib.config.WroConfig;
+import com.orange.wro.taglib.config.WroTagLibConfig;
 
 /**
  * @author: Angelo Tata
@@ -79,7 +90,11 @@ public class IncludeTagTest {
 
 	@Test
 	public void failsWhenMinimizedFilesUnavailable() throws Exception {
-		when(wroConfig.getGroup(GROUP_NAME_FIRST)).thenReturn(new FilesGroup(GROUP_NAME_FIRST));
+		
+		IGroupLoader loader = mock(IGroupLoader.class);
+		when(loader.getMinimizedResources()).thenReturn(new HashMap<ResourceType, String>());
+		
+		when(wroConfig.getGroup(GROUP_NAME_FIRST)).thenReturn(new FilesGroup(GROUP_NAME_FIRST, loader));
 
 		IncludeTag tag = getIncludeTag();
 		tag.setGroupNames(GROUP_NAMES);
@@ -98,7 +113,12 @@ public class IncludeTagTest {
 
 	@Test
 	public void failsWhenExplodedFileListUnavailable() throws Exception {
-		when(wroConfig.getGroup(GROUP_NAME_FIRST)).thenReturn(new FilesGroup(GROUP_NAME_FIRST));
+
+		IGroupLoader loader = mock(IGroupLoader.class);
+		when(loader.getResources(ResourceType.JS)).thenReturn(new ArrayList<String>());
+		when(loader.getResources(ResourceType.CSS)).thenReturn(new ArrayList<String>());
+		
+		when(wroConfig.getGroup(GROUP_NAME_FIRST)).thenReturn(new FilesGroup(GROUP_NAME_FIRST, loader));
 
 		IncludeTag tag = getIncludeTag();
 		tag.setGroupNames(GROUP_NAMES);
