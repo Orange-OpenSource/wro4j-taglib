@@ -15,14 +15,17 @@
 */
 package com.orange.wro.taglib.config;
 
-import ro.isdc.wro.http.support.ServletContextAttributeHelper;
-import ro.isdc.wro.model.WroModel;
-
-import javax.servlet.ServletContext;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
+
+import javax.servlet.ServletContext;
+
+import ro.isdc.wro.http.support.ServletContextAttributeHelper;
+import ro.isdc.wro.model.WroModel;
 
 /**
  * @author Angelo Tata
@@ -37,7 +40,8 @@ public class WroTagLibConfig {
 		BASE_URL_JS("com.orange.wro.base.url.js"),
 		BASE_URL_CSS("com.orange.wro.base.url.css"),
 		LESS_PATH("com.orange.wro.less.path"),
-		RESOURCE_DOMAIN("com.orange.wro.resource.domain");
+		RESOURCE_DOMAIN("com.orange.wro.resource.domain"),
+		MAPPING_FILE("com.orange.wro.mapping.files");
 
 		private String key;
 
@@ -53,6 +57,8 @@ public class WroTagLibConfig {
 	final ServletContext servletContext;
 	final WroTagLibProperties wroTagLibProperties;
 	final Map<String, String> configValues;
+	
+	Map<String, String> mapping;
 
 	public WroTagLibConfig(ServletContext servletContext) {
 		this.servletContext = servletContext;
@@ -102,6 +108,40 @@ public class WroTagLibConfig {
 		return this.configValues.get(InitParam.RESOURCE_DOMAIN.key);
 	}
 
+	public String getMappingFiles() throws ConfigurationException {
+		return this.configValues.get(InitParam.MAPPING_FILE.getKey());
+	}
+	
+	public String getGroupForFile(String fileName) {
+		
+		try {
+
+			if (mapping == null) {
+			
+				mapping = new HashMap<String, String>();
+				
+				String paths = getMappingFiles();
+				
+				if (paths != null) {
+					Properties props = new Properties();
+					
+					for (String path : paths.split(",")) {
+						props.load(getClass().getResourceAsStream(path));
+					}
+					
+					for (String key : props.stringPropertyNames()) {
+						mapping.put(props.getProperty(key), key);
+					}
+				}
+			}
+			
+		} catch (IOException e) {
+			throw new ConfigurationException("Unable to read wro4j mapping file");
+		}
+		
+		return mapping.get(fileName);
+	}
+	
 	public WroModel getModel(ServletContextAttributeHelper servletContextAttributeHelper) {
 		try {
 			return servletContextAttributeHelper.

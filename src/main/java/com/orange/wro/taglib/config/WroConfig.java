@@ -18,13 +18,11 @@
 
 package com.orange.wro.taglib.config;
 
-import org.apache.commons.io.FilenameUtils;
+import java.util.HashMap;
+import java.util.Map;
+
 import ro.isdc.wro.model.WroModel;
 import ro.isdc.wro.model.group.Group;
-import ro.isdc.wro.model.resource.Resource;
-import ro.isdc.wro.model.resource.ResourceType;
-
-import java.util.*;
 
 /**
  * This singleton keeps the minimized and unminimized files for
@@ -62,7 +60,7 @@ public class WroConfig {
 		
 		for (Group group: model.getGroups()) {
 			String groupName = group.getName();
-			FilesGroup filesGroup = new FilesGroup(groupName, new GroupLoader(group));
+			FilesGroup filesGroup = new FilesGroup(groupName, new GroupLoader(instance.wroTagLibConfig, group));
 			groups.put(groupName, filesGroup);
 		}
 	}
@@ -86,50 +84,4 @@ public class WroConfig {
     public WroTagLibConfig getWroTagLibConfig() {
         return this.wroTagLibConfig;
     }
-
-	
-	private class GroupLoader implements IGroupLoader {
-		
-		private Group group;
-		
-		GroupLoader(Group group) {
-			this.group = group;
-		}
-
-		@Override
-		public List<String> getResources(ResourceType resourceType) {
-			
-			List<String> result = new ArrayList<String>();
-			
-			Group filteredGroup = group.collectResourcesOfType(resourceType);
-			for (Resource resource: filteredGroup.getResources()) {
-				String file = resource.getUri();
-				result.add(file);
-			}
-
-			return result;
-		}
-
-		@Override
-		public Map<ResourceType, String> getMinimizedResources() {
-			Map<ResourceType, String> res = new HashMap<ResourceType, String>();
-			Set<String> resourcePaths = wroTagLibConfig.getResourcePaths();
-			String groupName = group.getName();
-			
-			if (resourcePaths == null) {
-				return null;
-			}
-
-			for (String path : resourcePaths) {
-				String basename = FilenameUtils.getBaseName(path);
-				
-				if (basename.startsWith(groupName)) {
-					String type = FilenameUtils.getExtension(path);
-					res.put(ResourceType.get(type), path);
-				}
-			}
-			
-			return res;
-		}
-	}
 }
