@@ -16,6 +16,7 @@
 package com.orange.wro.taglib.config;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -24,6 +25,9 @@ import java.util.Set;
 
 import javax.servlet.ServletContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ro.isdc.wro.http.support.ServletContextAttributeHelper;
 import ro.isdc.wro.model.WroModel;
 
@@ -31,6 +35,9 @@ import ro.isdc.wro.model.WroModel;
  * @author Angelo Tata
  */
 public class WroTagLibConfig {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(WroTagLibConfig.class);
+	
 	public enum InitParam {
 		PROPERTIES_DEFAULT_LOCATION("com.orange.wro.properties.default.location"),
 		PROPERTIES_LOCATION("com.orange.wro.properties.location"),
@@ -126,7 +133,13 @@ public class WroTagLibConfig {
 					Properties props = new Properties();
 					
 					for (String path : paths.split(",")) {
-						props.load(getClass().getResourceAsStream(path));
+						InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(path);
+						
+						if (inputStream != null) {
+							props.load(inputStream);
+						} else {
+							LOGGER.debug("Unable to load a mapping file: {} not found", path);
+						}
 					}
 					
 					for (String key : props.stringPropertyNames()) {
