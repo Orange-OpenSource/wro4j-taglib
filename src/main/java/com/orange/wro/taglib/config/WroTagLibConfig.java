@@ -133,7 +133,7 @@ public class WroTagLibConfig {
 					Properties props = new Properties();
 					
 					for (String path : paths.split(",")) {
-						InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(path);
+						InputStream inputStream = this.servletContext.getResourceAsStream(path);
 						
 						if (inputStream != null) {
 							props.load(inputStream);
