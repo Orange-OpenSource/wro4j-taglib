@@ -71,7 +71,10 @@ public class GroupLoader implements IGroupLoader {
 				} else {
 					if (FilenameUtils.getBaseName(path).startsWith(groupName)) {
 						String type = FilenameUtils.getExtension(path);
-						res.put(ResourceType.get(type), path);
+						// if the result already contains a path for this type, then it won't be overridden
+						if (!res.containsKey(ResourceType.get(type))) {
+							res.put(ResourceType.get(type), path);
+						}
 					}
 				}
 			}
